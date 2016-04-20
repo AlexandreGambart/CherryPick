@@ -40,6 +40,7 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
     private static final String FIREBASE_ERROR = "Firebase Error";
     private static final String USER_ERROR = "User Error";
     private static final String LOGIN_SUCCESS = "Login Success";
+    private static final String LOGOUT_SUCCESS = "Logout Success";
     private static final String USER_CREATION_SUCCESS =  "Successfully created user";
     private static final String USER_CREATION_ERROR =  "User creation error";
     private static final String EMAIL_INVALID =  "email is invalid :";
@@ -130,7 +131,7 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
 
     @Override
     public void onFirebaseLoggedOut() {
-        Toast.makeText(getApplicationContext(), LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
     }
 
     @Override
