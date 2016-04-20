@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.nitishbhaskar.cherrypick.ProductDetailsFragment">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/googlemap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:backgroundTint="@color/colorCardDetails">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/details_productName"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_margin="5dp"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_productPrice"
+                android:text="Price"
+                android:gravity="right"
+                android:layout_below="@+id/details_productDistance"
+                android:layout_alignEnd="@+id/details_productDistance" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_datePosted"
+                android:text="Date"
+                android:layout_below="@+id/details_productName"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"
+                android:textSize="10sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_productDescription"
+                android:text="Description"
+                android:layout_below="@+id/details_datePosted"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/details_productDistance"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,103 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="15dp"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal"
+    tools:context="com.example.nitishbhaskar.hw5.CardViewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:rowCount="7"
+            android:columnCount="1"
+            android:padding="8dp"
+            android:id="@+id/topLayout"
+            android:background="#f1dadd">
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_rowSpan="5"
+                android:layout_columnWeight="1"
+                >
+
+                <ImageView
+                    android:id="@+id/iconItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon" />
+
+                <TextView
+                    android:id="@+id/productPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="147dp"
+                    android:layout_marginLeft="0.2dp"
+                    android:text="Price: $1500"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp"
+                    android:background="#0099ff"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/productTitle"
+                android:layout_row="5"
+                android:text="NEXUS 5X"
+                android:textSize="20sp"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:textStyle="bold|normal"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/productDescription"
+                android:layout_row="6"
+                android:text="NEXUS 5X"
+                android:textSize="15sp"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_marginTop="5dp"
+                android:layout_rowWeight="0.1"
+                android:textStyle="normal"/>
+        </GridLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topLayout"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="3dp"
+            android:background="#ce7e88">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/productDatePostedOn"
+                android:layout_row="6"
+                android:text="Date: 13th April 2016"
+                android:textSize="14sp"
+                android:textStyle="bold|normal"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
