@@ -12,13 +12,16 @@ import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ITileClickListener  {
+import java.util.HashMap;
+
+public class BuyActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, ICardClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_buy);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -32,12 +35,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportFragmentManager().beginTransaction().
-                replace(R.id.mainActivityContainer, HomePageFragment.newInstance(R.id.homePageFragment))
+                replace(R.id.buyActivityContainer, BuyFragment.newInstance(R.id.buyPageFragment))
                 .commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         int id = item.getItemId();
         Intent intent;
 
@@ -61,16 +65,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     @Override
-    public void tileClicked(int tileId) {
-        Intent intent;
-        switch (tileId) {
-            case R.id.buyTile: //Navigates to Buy activity
-                intent = new Intent(this, BuyActivity.class);
-                startActivity(intent);
-                break;
-        }
+    public void onCardViewClick(HashMap<String, ?> product) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.buyActivityContainer, ProductDetailsFragment.newInstance(product))
+                .addToBackStack("productInfo")
+                .commit();
     }
 }
