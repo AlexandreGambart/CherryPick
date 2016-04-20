@@ -4,15 +4,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/buyNavigation"
-            android:icon="@drawable/aboutme_navigation"
+            android:icon="@drawable/buylogo"
             android:title="Buy" />
         <item
             android:id="@+id/sellNavigation"
-            android:icon="@drawable/task2_navigation"
+            android:icon="@drawable/selllogo"
             android:title="Sell" />
         <item
             android:id="@+id/exchangeNavigation"
-            android:icon="@drawable/task3_navigation"
+            android:icon="@drawable/exchangelogo"
             android:title="Exchange" />
     </group>
 
@@ -20,7 +20,7 @@
         <menu>
             <item
                 android:id="@+id/logoutApp"
-                android:icon="@drawable/aboutme_navigation"
+                android:icon="@mipmap/logout"
                 android:title="Logout" />
         </menu>
     </item>
