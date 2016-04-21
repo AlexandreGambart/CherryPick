@@ -1,12 +1,20 @@
 package com.example.nitishbhaskar.cherrypick;
 
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -18,6 +26,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class HomePageFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String SHOWCASE_ID = "Sequence 1";
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private ITileClickListener tileClickListener = null;
 
     public static HomePageFragment newInstance(int sectionNumber){
         HomePageFragment homePageFragment = new HomePageFragment();
@@ -37,7 +47,7 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        final ITileClickListener tileClickListener;
+
         try {
             tileClickListener = (ITileClickListener) view.getContext();
         }
@@ -73,7 +83,54 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                promptSpeechInput();
+            }
+        });
+
         return view;
+    }
+
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                "en-IN");
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == -1 && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                    for(String text : result ){
+                        if(text.toLowerCase().contains("buy")){
+                            tileClickListener.tileClicked(R.id.buyTile);
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
 }
