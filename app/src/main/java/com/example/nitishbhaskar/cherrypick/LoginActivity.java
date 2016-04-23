@@ -1,8 +1,17 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -18,7 +27,10 @@ import com.firebase.ui.auth.core.AuthProviderType;
 import com.firebase.ui.auth.core.FirebaseLoginBaseActivity;
 import com.firebase.ui.auth.core.FirebaseLoginError;
 
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -27,6 +39,7 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
     Firebase firebaseRef;
     EditText userNameET;
     EditText passwordET;
+    TextToSpeech tts;
     FancyButton signUp;
     String mName;
     ImageView logoName;
@@ -52,6 +65,28 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
         firebaseRef = new Firebase(FIREBASEREF);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        Handler mHandler = new Handler();
+        if (!isOnline()) {tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("error", "This Language is not supported");
+                    } else {
+                        ConvertTextToSpeech();
+                    }
+                } else
+                    Log.e("error", "Initilization Failed!");
+            }
+        });
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    goToNetworkSettings();
+                }
+            }, 5000);
+        }
         loginButton2 = (FancyButton)findViewById(R.id.loginButton2);
         signUp = (FancyButton)findViewById(R.id.signUp);
         signUpLayout = (RelativeLayout)findViewById(R.id.signUplayout);
@@ -91,6 +126,55 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
                 createUser();
             }
         });
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+
+        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+            Toast.makeText(getApplicationContext(), "No Internet connection!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public void goToNetworkSettings(){
+
+        LoginActivity.this.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+    }
+
+    private void ConvertTextToSpeech() {
+        // TODO Auto-generated method stub
+        String text = "This application needs internet connection. Please switch on the internet to continue using the app. Thank you";
+        if(text==null||"".equals(text))
+        {
+            text = "Content not available";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ttsGreater21(text);
+            } else {
+                ttsUnder20(text);
+            }
+        }else
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ttsGreater21(text);
+        } else {
+            ttsUnder20(text);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     @Override
