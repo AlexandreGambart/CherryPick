@@ -54,6 +54,7 @@ public class ProductDetailsFragment extends Fragment implements
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Location mLastLocation;
+
     /*****************************************************/
 
     public static ProductDetailsFragment newInstance(HashMap<String, ?> productData){
