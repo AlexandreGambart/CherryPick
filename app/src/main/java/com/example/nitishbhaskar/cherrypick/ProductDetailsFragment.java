@@ -1,12 +1,17 @@
 package com.example.nitishbhaskar.cherrypick;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -36,6 +41,7 @@ import java.security.Permission;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.lang.Object;
 
 
 /**
@@ -109,6 +115,16 @@ public class ProductDetailsFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        try {
+            if(Settings.Secure.getInt(getContext().getContentResolver(), Settings.Secure.LOCATION_MODE) == 0) {
+                Intent gpsOptionsIntent = new Intent(
+                        Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(gpsOptionsIntent);
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -132,6 +148,7 @@ public class ProductDetailsFragment extends Fragment implements
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                     buildGoogleApiClient();
 
                 } else {
@@ -315,4 +332,5 @@ public class ProductDetailsFragment extends Fragment implements
         }
         return placeAddress;
     }
+
 }
