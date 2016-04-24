@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
 @JsonIgnoreProperties({ "selection" })
-public class Product implements Serializable{
+public class Product implements  Serializable{
 
     String datePostedOn, description, image, location, price, productId, productName;
     

@@ -138,7 +138,7 @@ public class ProductDetailsFragment extends Fragment implements
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                      // buildGoogleApiClient();
+                     // buildGoogleApiClient();
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -187,12 +187,12 @@ public class ProductDetailsFragment extends Fragment implements
 
     @Override
     public void onStart() {
-        super.onStart();
         new Handler().postDelayed(new Runnable() {
             public void run() {
 
             }
         }, 5000);
+        super.onStart();
         mGoogleApiClient.connect();
     }
 
