@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +15,9 @@ import android.view.ViewGroup;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -97,6 +101,50 @@ public class BuyFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        if (menu.findItem(R.id.action_search) == null) {
+            inflater.inflate(R.menu.search_view, menu);
+        }
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    query = query.toLowerCase();
+
+                    final HashMap filteredList = new HashMap();
+
+                    for (int i = 0; i < productList.getSize(); i++) {
+
+                        final String text = productList.getItem(i).get("price").toString();
+                        if (text.contains(query)) {
+
+                            filteredList.put(productList.getItem(i).get("productName"),productList.getItem(i));
+                        }
+                    }
+
+                    myLayoutManager = new LinearLayoutManager(getActivity());
+                    myRecyclerView.setLayoutManager(myLayoutManager);
+                    final Firebase ref = new Firebase(getString(R.string.firebaseProducts));
+                    myFirebaseRecylerAdapter = new MyFirebaseRecyclerAdapter(Product.class,R.layout.fragment_card_view,
+                            MyFirebaseRecyclerAdapter.ProductViewHolder.class, ref, getActivity());
+                    myRecyclerView.setAdapter(myFirebaseRecylerAdapter);
+                    myFirebaseRecylerAdapter.notifyDataSetChanged();  // data set changed
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }
