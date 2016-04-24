@@ -1,4 +1,5 @@
 package com.example.nitishbhaskar.cherrypick;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.security.Permission;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +47,13 @@ public class ProductDetailsFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     private static final String PRODUCT_INDEX = "product_index";
-    private static HashMap<String,?> currentProduct ;
+    private static HashMap<String, ?> currentProduct;
     TextView productDistance;
     LatLng productLatitudeLongitude;
 
-    /***define Parameters here****************************/
+    /***
+     * define Parameters here
+     ****************************/
     private GoogleApiClient mGoogleApiClient;
     private SupportMapFragment mMapFragment;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -57,8 +61,8 @@ public class ProductDetailsFragment extends Fragment implements
 
     /*****************************************************/
 
-    public static ProductDetailsFragment newInstance(HashMap<String, ?> productData){
-        ProductDetailsFragment productDetailsFragment= new ProductDetailsFragment();
+    public static ProductDetailsFragment newInstance(HashMap<String, ?> productData) {
+        ProductDetailsFragment productDetailsFragment = new ProductDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(PRODUCT_INDEX, productData);
         productDetailsFragment.setArguments(args);
@@ -80,7 +84,7 @@ public class ProductDetailsFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_product_details, container, false);
         //super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if(getArguments() != null)
+        if (getArguments() != null)
             currentProduct = (HashMap<String, ?>) getArguments().getSerializable(PRODUCT_INDEX);
 
         TextView productName = (TextView) view.findViewById(R.id.details_productName);
@@ -93,10 +97,10 @@ public class ProductDetailsFragment extends Fragment implements
 
         productName.setText((String) currentProduct.get("productName"));
         //productId.setText((String) currentProduct.get("productId"));
-        productDatePosted.setText("Date: "+(String) currentProduct.get("datePostedOn"));
+        productDatePosted.setText("Date: " + (String) currentProduct.get("datePostedOn"));
         productDescription.setText((String) currentProduct.get("description"));
         //productLocation.setText((String) currentProduct.get("location"));
-        productPrice.setText("Price: $"+(String) currentProduct.get("price"));
+        productPrice.setText("Price: $" + (String) currentProduct.get("price"));
         return view;
     }
 
@@ -109,22 +113,11 @@ public class ProductDetailsFragment extends Fragment implements
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        250);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-
-        else {
-            if(savedInstanceState==null){
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    250);
+        } else {
+            if (savedInstanceState == null) {
                 buildGoogleApiClient();
             }
         }
@@ -139,16 +132,14 @@ public class ProductDetailsFragment extends Fragment implements
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                     // buildGoogleApiClient();
+                    buildGoogleApiClient();
+
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -156,13 +147,13 @@ public class ProductDetailsFragment extends Fragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googlemap);
-        if(mMapFragment!=null){
+        if (mMapFragment != null) {
             mMapFragment.getMapAsync(this);
         }
     }
 
     private void buildGoogleApiClient() {
-        if(mGoogleApiClient==null){
+        if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -188,21 +179,22 @@ public class ProductDetailsFragment extends Fragment implements
 
     @Override
     public void onStart() {
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-
-            }
-        }, 5000);
         super.onStart();
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
     }
 
     @Override
     public void onStop() {
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
+        try {
+            super.onStop();
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+            }
+        } catch (Exception e) {
+
         }
-        super.onStop();
+
     }
 
     private LocationRequest createLocationRequest() {
@@ -218,7 +210,7 @@ public class ProductDetailsFragment extends Fragment implements
         LatLng latLng_Now = new LatLng(location.getLatitude(), location.getLongitude());
         Double distance = CalculationByDistance(latLng_Now, productLatitudeLongitude);
         String result = String.format("%.2f", distance);
-        productDistance.setText(result+" mi");
+        productDistance.setText(result + " mi");
     }
 
     @Override
@@ -253,52 +245,55 @@ public class ProductDetailsFragment extends Fragment implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-        mMap.setMyLocationEnabled(true);
+        try {
+            mMap = googleMap;
+            //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            //mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+            mMap.setMyLocationEnabled(true);
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng lat) {
-                Toast.makeText(getContext(), "Latitude: " + lat.latitude + "\nLongitude: " + lat.longitude, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng lat) {
-                final Marker marker = mMap.addMarker(new MarkerOptions()
-                        .title("self defined marker")
-                        .snippet("Hello!")
-                        .position(lat).visible(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
-                );
-            }
-        });
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng lat) {
+                    Toast.makeText(getContext(), "Latitude: " + lat.latitude + "\nLongitude: " + lat.longitude, Toast.LENGTH_SHORT).show();
+                }
+            });
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng lat) {
+                    final Marker marker = mMap.addMarker(new MarkerOptions()
+                            .title("self defined marker")
+                            .snippet("Hello!")
+                            .position(lat).visible(true)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                    );
+                }
+            });
 
 
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Toast.makeText(getContext(), marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+            // Add a marker in Sydney and move the camera
+            String location = (String) currentProduct.get("location");
+            Double latitude = Double.parseDouble(location.split(",")[0]);
+            Double longitude = Double.parseDouble(location.split(",")[1]);
+            LatLng place = new LatLng(latitude, longitude);
+            productLatitudeLongitude = place;
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(place)      // Sets the center of the map to LatLng (refer to previous snippet)
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(90)               // Sets the tilt of the camera to 30 degrees
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)));
+        } catch (SecurityException se) {
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-            @Override
-            public boolean onMarkerClick(Marker marker){
-                Toast.makeText(getContext(), marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        // Add a marker in Sydney and move the camera
-        String location = (String)currentProduct.get("location");
-        Double latitude = Double.parseDouble(location.split(",")[0]);
-        Double longitude = Double.parseDouble(location.split(",")[1]);
-        LatLng place = new LatLng(latitude,longitude);
-        productLatitudeLongitude = place;
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(place)      // Sets the center of the map to LatLng (refer to previous snippet)
-                .zoom(17)                   // Sets the zoom
-                .bearing(90)               // Sets the tilt of the camera to 30 degrees
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude,longitude)));
+        }
     }
 
     public String getAddress(double latitude, double longitude) {
@@ -310,7 +305,7 @@ public class ProductDetailsFragment extends Fragment implements
                 String address = addresses.get(0).getAddressLine(0);
                 String city = addresses.get(0).getAddressLine(1);
                 String country = addresses.get(0).getAddressLine(2);
-                placeAddress = address +", "+ city +", " + country;
+                placeAddress = address + ", " + city + ", " + country;
                 Log.d("TAG", "address = " + address + ", city = " + city + ", country = " + country);
             } catch (Exception e) {
                 e.printStackTrace();
