@@ -55,10 +55,6 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
     String email;
     android.net.Uri profileImageUrl;
 
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    public static final String Name = "nameKey";
-    public static final String Email = "emailKey";
-    public static final String ProfilePicUri = "profilePicUriKey";
     SharedPreferences sharedpreferences;
 
     /* String Constants */
@@ -158,12 +154,12 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
             name = acct.getDisplayName();
             email = acct.getEmail();
             profileImageUrl = acct.getPhotoUrl();
-            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
 
-            editor.putString(Name, name);
-            editor.putString(Email, email);
-            editor.putString(ProfilePicUri, profileImageUrl.toString());
+            editor.putString(getString(R.string.Name), name);
+            editor.putString(getString(R.string.Email), email);
+            editor.putString(getString(R.string.ProfilePicUri), profileImageUrl.toString());
             editor.commit();
         } else {
             // Signed out, show unauthenticated UI.

@@ -1,6 +1,8 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,10 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BuyActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICardClickListener{
@@ -57,6 +62,18 @@ public class BuyActivity extends AppCompatActivity
         toolBarImage.setVisibility(View.GONE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Fetch data from shared preference to set login user details in navigation drawer
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+        Map<String,?> savedStrings = sharedpreferences.getAll();
+        View navHeaderView = navigationView.getHeaderView(0);
+        TextView username = (TextView) navHeaderView.findViewById(R.id.username);
+        TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
+        ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
+        username.setText((String)savedStrings.get(getString(R.string.Name)));
+        userEmail.setText((String) savedStrings.get(getString(R.string.Email)));
+        Picasso.with(getApplicationContext()).load((String) savedStrings.get(getString(R.string.ProfilePicUri))).into(profileImage);
+
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.buyActivityContainer, BuyFragment.newInstance(R.id.buyPageFragment))
                 .commit();

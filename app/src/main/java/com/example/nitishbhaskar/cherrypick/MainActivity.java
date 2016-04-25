@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity
     String name;
     String email;
     String photoUrl;
-    SharedPreferences sharedpreferences;
-    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +51,21 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        Map<String,?> savedStrings = sharedpreferences.getAll();
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+        Map<String,?> savedStrings = sharedpreferences.getAll();
         View navHeaderView = navigationView.getHeaderView(0);
         TextView username = (TextView) navHeaderView.findViewById(R.id.username);
         TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
         ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
-        username.setText((String)savedStrings.get("nameKey"));
-        userEmail.setText((String) savedStrings.get("emailKey"));
-        Picasso.with(getApplicationContext()).load((String)savedStrings.get("profilePicUriKey")).into(profileImage);
+        username.setText((String)savedStrings.get(getString(R.string.Name)));
+        userEmail.setText((String) savedStrings.get(getString(R.string.Email)));
+        Picasso.with(getApplicationContext()).load((String) savedStrings.get(getString(R.string.ProfilePicUri))).into(profileImage);
 
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.mainActivityContainer, HomePageFragment.newInstance(R.id.homePageFragment))
