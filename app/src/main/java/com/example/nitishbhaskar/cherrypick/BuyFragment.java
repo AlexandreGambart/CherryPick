@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,6 +31,7 @@ public class BuyFragment extends Fragment {
     LinearLayoutManager myLayoutManager;
     ProductData productList;
     MyFirebaseRecyclerAdapter myFirebaseRecylerAdapter;
+
 
     public static BuyFragment newInstance(int sectionNumber){
         BuyFragment buyFragment = new BuyFragment();
@@ -103,6 +106,8 @@ public class BuyFragment extends Fragment {
         return rootView;
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -115,26 +120,11 @@ public class BuyFragment extends Fragment {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    query = query.toLowerCase();
-
-                    final HashMap filteredList = new HashMap();
-
-                    for (int i = 0; i < productList.getSize(); i++) {
-
-                        final String text = productList.getItem(i).get("price").toString();
-                        if (text.contains(query)) {
-
-                            filteredList.put(productList.getItem(i).get("productName"),productList.getItem(i));
-                        }
+                    int position = productList.findFirst(query);
+                    if (position >= 0) {
+                        myRecyclerView.scrollToPosition(position);
                     }
 
-                    myLayoutManager = new LinearLayoutManager(getActivity());
-                    myRecyclerView.setLayoutManager(myLayoutManager);
-                    final Firebase ref = new Firebase(getString(R.string.firebaseProducts));
-                    myFirebaseRecylerAdapter = new MyFirebaseRecyclerAdapter(Product.class,R.layout.fragment_card_view,
-                            MyFirebaseRecyclerAdapter.ProductViewHolder.class, ref, getActivity());
-                    myRecyclerView.setAdapter(myFirebaseRecylerAdapter);
-                    myFirebaseRecylerAdapter.notifyDataSetChanged();  // data set changed
                     return true;
                 }
 

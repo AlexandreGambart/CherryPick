@@ -10,6 +10,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,13 @@ public class ProductData {
     Context mContext;
 
     List<Map<String,?>> productList;
+    List<Map<String,?>> filteredProductList;
 
     public List<Map<String, ?>> getProductList() {
         return productList;
     }
+
+
 
     public int getSize(){
         return productList.size();
@@ -50,6 +54,8 @@ public class ProductData {
         mContext = null;
         myFirebaseRecyclerAdapter = null;
     }
+
+
 
     public void setAdapter(MyFirebaseRecyclerAdapter adapter){
         myFirebaseRecyclerAdapter = adapter;
@@ -183,13 +189,32 @@ public class ProductData {
         return movie;
     }*/
 
-    public int findMovie(String name){
-        for(int i=0;i<productList.size();i++){
-            HashMap<String,?> movie = (HashMap<String,?>) productList.get(i);
-            String movieName = (String)movie.get("name");
-            if(movieName.toLowerCase().contains(name.toLowerCase()))
+    //code to use filter option
+    public void flushFilter(){
+        filteredProductList=new ArrayList<Map<String,?>>();
+        filteredProductList.addAll(getProductList());
+        myFirebaseRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    public void setFilter(String queryText) {
+
+        filteredProductList=new ArrayList<Map<String,?>>();
+        for (Map<String,?> item: getProductList()) {
+            if (item.get("productName").toString().contains(queryText.toLowerCase()))
+                filteredProductList.add(item);
+        }
+        myFirebaseRecyclerAdapter.notifyDataSetChanged();
+    }//end of filter option code
+
+    public int findFirst(String query){
+
+        for(int i=0;i<getSize();i++){
+            HashMap hm = (HashMap)getProductList().get(i);
+            if(((String)hm.get("productName")).toLowerCase().contains(query.toLowerCase())){
                 return i;
+            }
         }
         return 0;
+
     }
 }

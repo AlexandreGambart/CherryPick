@@ -57,6 +57,8 @@ public class MyFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Product,M
         this.myClickListener = myItemClickListener;
     }
 
+
+
     //TODO: Populate ViewHolder and add listeners.
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
         public TextView productName;
