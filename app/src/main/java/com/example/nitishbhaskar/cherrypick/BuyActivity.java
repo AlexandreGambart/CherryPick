@@ -57,7 +57,6 @@ public class BuyActivity extends AppCompatActivity
         toolBarImage.setVisibility(View.GONE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.buyActivityContainer, BuyFragment.newInstance(R.id.buyPageFragment))
                 .commit();

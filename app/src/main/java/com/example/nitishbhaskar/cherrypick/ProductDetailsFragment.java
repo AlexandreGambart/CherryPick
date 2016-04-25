@@ -104,8 +104,6 @@ public class ProductDetailsFragment extends Fragment implements
         TextView productDescription = (TextView) view.findViewById(R.id.details_productDescription);
         //TextView productLocation = (TextView) view.findViewById(R.id.details_productLocation);
         TextView productPrice = (TextView) view.findViewById(R.id.details_productPrice);
-
-
         productName.setText((String) currentProduct.get("productName"));
         //productId.setText((String) currentProduct.get("productId"));
         productDatePosted.setText("Date: " + (String) currentProduct.get("datePostedOn"));
