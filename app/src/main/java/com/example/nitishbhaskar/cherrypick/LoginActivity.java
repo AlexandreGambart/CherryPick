@@ -75,21 +75,7 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         Handler mHandler = new Handler();
-        if (!isOnline()) {tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(Locale.US);
-                    if (result == TextToSpeech.LANG_MISSING_DATA ||
-                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("error", "This Language is not supported");
-                    } else {
-                        ConvertTextToSpeech();
-                    }
-                } else
-                    Log.e("error", "Initilization Failed!");
-            }
-        });
+        if (!isOnline()) {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     goToNetworkSettings();
@@ -183,38 +169,6 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
         LoginActivity.this.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
     }
 
-    private void ConvertTextToSpeech() {
-        // TODO Auto-generated method stub
-        String text = "This application needs internet connection. Please switch on the internet to continue using the app. Thank you";
-        if(text==null||"".equals(text))
-        {
-            text = "Content not available";
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ttsGreater21(text);
-            } else {
-                ttsUnder20(text);
-            }
-        }else
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ttsGreater21(text);
-        } else {
-            ttsUnder20(text);
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void ttsUnder20(String text) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void ttsGreater21(String text) {
-        String utteranceId=this.hashCode() + "";
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
-    }
 
     @Override
     protected void onFirebaseLoginProviderError(FirebaseLoginError firebaseLoginError) {

@@ -1,6 +1,7 @@
 package com.example.nitishbhaskar.cherrypick;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +10,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -45,6 +48,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.lang.Object;
+import java.util.Locale;
 
 
 /**
@@ -59,6 +63,7 @@ public class ProductDetailsFragment extends Fragment implements
     private static HashMap<String, ?> currentProduct;
     TextView productDistance;
     LatLng productLatitudeLongitude;
+    TextToSpeech tts;
 
     /***
      * define Parameters here
@@ -285,7 +290,7 @@ public class ProductDetailsFragment extends Fragment implements
                             .title("self defined marker")
                             .snippet("Hello!")
                             .position(lat).visible(true)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
                     );
                 }
             });
@@ -293,8 +298,24 @@ public class ProductDetailsFragment extends Fragment implements
 
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
-                public boolean onMarkerClick(Marker marker) {
+                public boolean onMarkerClick(final Marker marker) {
                     Toast.makeText(getContext(), marker.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                     tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int status) {
+                            if (status == TextToSpeech.SUCCESS) {
+                                int result = tts.setLanguage(Locale.US);
+                                if (result == TextToSpeech.LANG_MISSING_DATA ||
+                                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                                    Log.e("error", "This Language is not supported");
+                                } else {
+                                    ConvertTextToSpeech(marker.getTitle().toString());
+                                }
+                            } else
+                                Log.e("error", "Initilization Failed!");
+                        }
+                    });
+
                     return true;
                 }
             });
@@ -310,10 +331,43 @@ public class ProductDetailsFragment extends Fragment implements
                     .bearing(90)               // Sets the tilt of the camera to 30 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)));
+            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         } catch (SecurityException se) {
 
         }
+    }
+
+    private void ConvertTextToSpeech(String text) {
+        // TODO Auto-generated method stub
+
+        if(text==null||"".equals(text))
+        {
+            text = "Content not available";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ttsGreater21(text);
+            } else {
+                ttsUnder20(text);
+            }
+        }else
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ttsGreater21(text);
+        } else {
+            ttsUnder20(text);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void ttsUnder20(String text) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void ttsGreater21(String text) {
+        String utteranceId=this.hashCode() + "";
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     public String getAddress(double latitude, double longitude) {
