@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.sellNavigation) {
-
+            intent = new Intent(this,SellActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.exchangeNavigation) {
 
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity
         switch (tileId) {
             case R.id.buyTile: //Navigates to Buy activity
                 intent = new Intent(this, BuyActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.sellTile:
+                intent = new Intent(this,SellActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -94,7 +94,8 @@ public class BuyActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.sellNavigation) {
-
+            intent = new Intent(this,SellActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.exchangeNavigation) {
 
