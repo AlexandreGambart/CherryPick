@@ -85,8 +85,11 @@ public class BuyActivity extends AppCompatActivity
 
         int id = item.getItemId();
         Intent intent;
-
-        if (id == R.id.buyNavigation) {
+        if (id == R.id.Homepage) {
+            intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.buyNavigation) {
             intent = new Intent(this, BuyActivity.class);
             startActivity(intent);
 
