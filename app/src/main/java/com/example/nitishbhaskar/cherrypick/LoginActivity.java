@@ -3,6 +3,7 @@ package com.example.nitishbhaskar.cherrypick;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -26,6 +27,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.ui.auth.core.AuthProviderType;
 import com.firebase.ui.auth.core.FirebaseLoginBaseActivity;
 import com.firebase.ui.auth.core.FirebaseLoginError;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -47,6 +51,15 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
     FancyButton login;
     FancyButton loginButton2;
     RelativeLayout signUpLayout;
+    String name;
+    String email;
+    android.net.Uri profileImageUrl;
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String Email = "emailKey";
+    public static final String ProfilePicUri = "profilePicUriKey";
+    SharedPreferences sharedpreferences;
 
     /* String Constants */
     private static final String FIREBASEREF = "https://cherrypick.firebaseio.com/";
@@ -126,6 +139,36 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
                 createUser();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != 100) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            name = acct.getDisplayName();
+            email = acct.getEmail();
+            profileImageUrl = acct.getPhotoUrl();
+            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            editor.putString(Name, name);
+            editor.putString(Email, email);
+            editor.putString(ProfilePicUri, profileImageUrl.toString());
+            editor.commit();
+        } else {
+            // Signed out, show unauthenticated UI.
+            //updateUI(false);
+        }
     }
 
     public boolean isOnline() {
@@ -210,6 +253,9 @@ public class LoginActivity extends FirebaseLoginBaseActivity {
         }
         Toast.makeText(getApplicationContext(), LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+        myIntent.putExtra("name",name);
+        myIntent.putExtra("email",email);
+        myIntent.putExtra("photoUrl",profileImageUrl);
         LoginActivity.this.startActivity(myIntent);
     }
 

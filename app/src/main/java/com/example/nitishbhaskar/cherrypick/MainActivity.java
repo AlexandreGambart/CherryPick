@@ -1,7 +1,10 @@
 package com.example.nitishbhaskar.cherrypick;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,16 +17,28 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ITileClickListener  {
 
-
+    String name;
+    String email;
+    String photoUrl;
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +53,20 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        Map<String,?> savedStrings = sharedpreferences.getAll();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        View navHeaderView = navigationView.getHeaderView(0);
+        TextView username = (TextView) navHeaderView.findViewById(R.id.username);
+        TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
+        ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
+        username.setText((String)savedStrings.get("nameKey"));
+        userEmail.setText((String) savedStrings.get("emailKey"));
+        Picasso.with(getApplicationContext()).load((String)savedStrings.get("profilePicUriKey")).into(profileImage);
 
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.mainActivityContainer, HomePageFragment.newInstance(R.id.homePageFragment))
