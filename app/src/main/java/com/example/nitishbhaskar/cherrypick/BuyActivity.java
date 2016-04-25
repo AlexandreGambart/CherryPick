@@ -58,7 +58,7 @@ public class BuyActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        mapfragmentView = (View)findViewById(R.id.googlemap);
+        mapfragmentView = (View)findViewById(R.id.googlemap_buyPage);
         mapfragmentView.setAlpha(0.75f);
         toolBarImage.setVisibility(View.GONE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
