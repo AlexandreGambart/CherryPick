@@ -30,8 +30,6 @@ public class ProductData {
         return productList;
     }
 
-
-
     public int getSize(){
         return productList.size();
     }
@@ -54,8 +52,6 @@ public class ProductData {
         mContext = null;
         myFirebaseRecyclerAdapter = null;
     }
-
-
 
     public void setAdapter(MyFirebaseRecyclerAdapter adapter){
         myFirebaseRecyclerAdapter = adapter;

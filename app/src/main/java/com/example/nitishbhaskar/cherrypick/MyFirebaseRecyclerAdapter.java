@@ -31,26 +31,8 @@ public class MyFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Product,M
         productViewHolder.productPrice.setText("Price: $"+product.getPrice());
         productViewHolder.productDatePostedOn.setText("Date: "+product.getDatePostedOn());
         //TODO: Populate viewHolder by setting the movie attributes to cardview fields
-        //movieViewHolder.nameTV.setText(movie.getName());
-        /*Picasso.with(mContext).load(movie.getUrl()).into(movieViewHolder.icon);
-        movieViewHolder.title.setText(movie.getName());
-        movieViewHolder.description.setText(movie.getDescription());
-//            checkBox.setChecked((Boolean) movie.get("selection"));
-        Float rat = (movie.getRating());*/
-        /*if(rat < 7){
-            movieViewHolder.mSimpleRatingView.setIconColor(0xffff0000);
-            movieViewHolder.mSimpleRatingView.setSelectedRating(SimpleRatingView.Rating.NEGATIVE);
-        }
-        else if (rat > 7 && rat < 8){
-            movieViewHolder.mSimpleRatingView.setIconColor(0xff0000ff);
-            movieViewHolder.mSimpleRatingView.setSelectedRating(SimpleRatingView.Rating.NEUTRAL);
-        }
-        else{
-            movieViewHolder.mSimpleRatingView.setIconColor(0xff00ff00);
-            movieViewHolder.mSimpleRatingView.setSelectedRating(SimpleRatingView.Rating.POSITIVE);
-        }*/
-
-       // movieViewHolder.rating.setText(String.valueOf(rat));
+        if(product.getImage() != null)
+            Picasso.with(mContext).load(product.getImage()).into(productViewHolder.productImage);
     }
 
     public void setOnItemClickListener(final IClickListener myItemClickListener){
@@ -67,6 +49,7 @@ public class MyFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Product,M
         public TextView productId;
         public TextView productDescription;
         public TextView productLocation;
+        public ImageView productImage;
 
         public ProductViewHolder(View v) {
             super(v);
@@ -75,7 +58,7 @@ public class MyFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Product,M
         productPrice = (TextView) itemView.findViewById(R.id.productPrice);
         productDatePostedOn = (TextView) itemView.findViewById(R.id.productDatePostedOn);
         productDescription = (TextView) itemView.findViewById(R.id.productDescription);
-
+            productImage = (ImageView) itemView.findViewById(R.id.productIcon);
 
        /* cardMenu.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,17 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ITileClickListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, ITileClickListener {
 
     String name;
     String email;
@@ -52,18 +55,17 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
-        Map<String,?> savedStrings = sharedpreferences.getAll();
+        Map<String, ?> savedStrings = sharedpreferences.getAll();
         View navHeaderView = navigationView.getHeaderView(0);
         TextView username = (TextView) navHeaderView.findViewById(R.id.username);
         TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
         ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
-        username.setText((String)savedStrings.get(getString(R.string.Name)));
+        username.setText((String) savedStrings.get(getString(R.string.Name)));
         userEmail.setText((String) savedStrings.get(getString(R.string.Email)));
         Picasso.with(getApplicationContext()).load((String) savedStrings.get(getString(R.string.ProfilePicUri))).into(profileImage);
 
@@ -80,8 +82,7 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
-        }
-        else if (id == R.id.buyNavigation) {
+        } else if (id == R.id.buyNavigation) {
             intent = new Intent(this, BuyActivity.class);
             startActivity(intent);
 
@@ -91,11 +92,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.exchangeNavigation) {
 
-        }
-        else if(id == R.id.logoutApp){
+        } else if (id == R.id.logoutApp) {
             Firebase ref = new Firebase(getString(R.string.firebaseUrl));
             ref.unauth();
-            intent = new Intent(this,LoginActivity.class);
+            intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
 

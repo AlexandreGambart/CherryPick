@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import com.firebase.client.Firebase;
 
 public class SellActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, INavigate{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,5 +68,11 @@ public class SellActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void navigateToHome() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

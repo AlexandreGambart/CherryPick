@@ -163,8 +163,7 @@
         fancy:fb_defaultColor="#D24958"
         fancy:fb_focusColor="#683045"
         fancy:fb_radius="10dp"
-        fancy:fb_text="Submit"
+        fancy:fb_text="Snap and Submit"
         fancy:fb_textColor="#C4C4C9"/>
-
 
 </RelativeLayout>

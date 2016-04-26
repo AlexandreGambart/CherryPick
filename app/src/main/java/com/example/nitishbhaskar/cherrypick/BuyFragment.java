@@ -213,7 +213,8 @@ public class BuyFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
         try {
             mMap = googleMap;
-            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            mMap.getUiSettings().setCompassEnabled(false);
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             mMap.setMyLocationEnabled(true);
 

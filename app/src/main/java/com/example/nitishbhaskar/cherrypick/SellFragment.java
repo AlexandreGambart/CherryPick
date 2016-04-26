@@ -1,6 +1,9 @@
 package com.example.nitishbhaskar.cherrypick;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -13,6 +16,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,17 +25,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -41,6 +54,8 @@ import mehdi.sakout.fancybuttons.FancyButton;
 public class SellFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final int REQUEST_TAKE_PHOTO = 100;
+    File photoFile;
     TextInputEditText productName;
     TextInputEditText productDescription;
     TextInputEditText productPrice;
@@ -51,6 +66,8 @@ public class SellFragment extends Fragment {
     DatePickerDialog.OnDateSetListener date;
     ProductData sellProduct;
     Location location;
+    HashMap product;
+    INavigate navigationListener;
 
     public SellFragment() {
         // Required empty public constructor
@@ -68,8 +85,15 @@ public class SellFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sell, container, false);
+        try {
+            navigationListener = (INavigate) view.getContext();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Implementation missed out.");
+        }
         productName = (TextInputEditText) view.findViewById(R.id.pName);
         productDescription = (TextInputEditText) view.findViewById(R.id.pDescription);
         productPrice = (TextInputEditText) view.findViewById(R.id.pPrice);
@@ -108,14 +132,9 @@ public class SellFragment extends Fragment {
                 Criteria criteria = new Criteria();
                 String provider = locationManager.getBestProvider(criteria, true);
                 // Getting Current Location
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 location = locationManager.getLastKnownLocation(provider);
@@ -128,15 +147,29 @@ public class SellFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkProductName() && checkProductDescription() && checkProductPrice() && checkProductDate()) {
-                    HashMap product = new HashMap();
+                    product = new HashMap();
                     product.put("productName", productName.getText().toString());
                     product.put("description", productDescription.getText().toString());
                     product.put("datePostedOn", productDate.getText().toString());
                     product.put("price", productPrice.getText().toString());
                     product.put("location", "" + location.getLatitude() + ", " + location.getLongitude());
-                    product.put("productId", productName.getText().toString().replace(" ","") + "_" + productDate.getText().toString() + "_" +getTime());
-                    product.put("image","https://www.google.com");
-                    sellProduct.addItemToServer(product);
+                    product.put("productId", productName.getText().toString().replace(" ", "") + "_" + productDate.getText().toString() + "_" + getTime());
+                    Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePhotoIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                            startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
+                        }
+                    }
                     Toast.makeText(getContext(),"Product Successfully added",Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Please fill out all the fields given above", Toast.LENGTH_SHORT).show();
@@ -150,7 +183,7 @@ public class SellFragment extends Fragment {
 
     private String getTime(){
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => "+c.getTime());
+        System.out.println("Current time => " + c.getTime());
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         String formattedDate = df.format(c.getTime());
@@ -231,6 +264,43 @@ public class SellFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode != 100) {
+                try {
+                    CloudinaryCloud.upload(photoFile, product);
+                    navigationListener.navigateToHome();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (resultCode == 100) {
+                // User cancelled the image capture
+                //finish();
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(DateT);
+        String imageFileName = "capturedImage";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        return image;
+
     }
 
 
