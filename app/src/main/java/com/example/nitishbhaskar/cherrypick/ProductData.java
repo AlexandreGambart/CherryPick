@@ -109,10 +109,10 @@ public class ProductData {
         }
     }
 
-    public void addItemToServer(Map<String, ?> movie){
-        if(movie!=null){
-            String id = (String) movie.get("id");
-            mref.child(id).setValue(movie);
+    public void addItemToServer(Map<String, ?> product){
+        if(product!=null){
+            String id = (String) product.get("id");
+            mref.child(id).setValue(product);
         }
     }
 
