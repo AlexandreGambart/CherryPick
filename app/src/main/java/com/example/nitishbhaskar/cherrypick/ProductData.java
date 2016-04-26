@@ -104,24 +104,25 @@ public class ProductData {
 
     public void removeItemFromServer(Map<String, ?> movie){
         if(movie!=null){
-            String id = (String) movie.get("id");
+            String id = (String) movie.get("productId");
             mref.child(id).removeValue();
         }
     }
 
     public void addItemToServer(Map<String, ?> product){
         if(product!=null){
-            String id = (String) product.get("id");
+            String id = (String) product.get("productId");
             mref.child(id).setValue(product);
+
         }
     }
 
     private void onItemAddedToCloud(HashMap item){
-        /*String id = (String) item.get("id");
+        /*String id = (String) item.get("productId");
         int insertPosition = 0;
         for(int i=0;i< productList.size();i++){
             HashMap movie = (HashMap) productList.get(i);
-            String mid = (String) movie.get("id");
+            String mid = (String) movie.get("productId");
             if(mid.equals(id))
                 return;
             if(mid.compareTo(id)<0)
@@ -137,10 +138,10 @@ public class ProductData {
 
     private void onItemRemovedFromCloud(HashMap item){
         int position = -1;
-        String id = (String) item.get("id");
+        String id = (String) item.get("productId");
         for(int i=0;i< productList.size();i++){
             HashMap movie = (HashMap) productList.get(i);
-            String mid = (String) movie.get("id");
+            String mid = (String) movie.get("productId");
             if(mid.equals(id)){
                 position = i;
                 break;
@@ -157,10 +158,10 @@ public class ProductData {
     }
 
     private void onItemUpdatedInCloud(HashMap item){
-        String id = (String) item.get("id");
+        String id = (String) item.get("productId");
         for(int i=0;i< productList.size();i++){
             HashMap movie = (HashMap) productList.get(i);
-            String mid = (String) movie.get("id");
+            String mid = (String) movie.get("productId");
             if(mid.equals(id)){
                 productList.remove(i);
                 productList.add(i, item);
