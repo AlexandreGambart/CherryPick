@@ -29,7 +29,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
@@ -38,8 +37,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.firebaseui:firebase-ui:0.3.1'
     compile 'com.firebase:firebase-client-android:2.5.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.xiprox.simpleratingview:library:+'
     compile 'com.github.medyo:fancybuttons:1.7'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
     compile 'com.google.android.gms:play-services:8.3.0'

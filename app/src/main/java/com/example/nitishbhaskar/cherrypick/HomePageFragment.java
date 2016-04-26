@@ -89,6 +89,13 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+        sellTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tileClickListener.tileClicked(R.id.sellTile);
+            }
+        });
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
