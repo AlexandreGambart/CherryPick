@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +49,8 @@ public class SellFragment extends Fragment {
     TextInputEditText myLocation;
     FancyButton submit;
     DatePickerDialog.OnDateSetListener date;
+    ProductData sellProduct;
+    Location location;
 
     public SellFragment() {
         // Required empty public constructor
@@ -74,6 +77,7 @@ public class SellFragment extends Fragment {
         myLocation = (TextInputEditText) view.findViewById(R.id.pLocation);
         myCalendar = Calendar.getInstance();
         submit = (FancyButton) view.findViewById(R.id.submitButton);
+        sellProduct = new ProductData();
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -114,7 +118,7 @@ public class SellFragment extends Fragment {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                Location location = locationManager.getLastKnownLocation(provider);
+                location = locationManager.getLastKnownLocation(provider);
                 updateLocation(location);
             }
         });
@@ -124,7 +128,16 @@ public class SellFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkProductName() && checkProductDescription() && checkProductPrice() && checkProductDate()) {
-                    Toast.makeText(getContext(), "successful", Toast.LENGTH_SHORT).show();
+                    HashMap product = new HashMap();
+                    product.put("productName", productName.getText().toString());
+                    product.put("description", productDescription.getText().toString());
+                    product.put("datePostedOn", productDate.getText().toString());
+                    product.put("price", productPrice.getText().toString());
+                    product.put("location", "" + location.getLatitude() + ", " + location.getLongitude());
+                    product.put("productId", productName.getText().toString().replace(" ","") + "_" + productDate.getText().toString() + "_" +getTime());
+                    product.put("image","https://www.google.com");
+                    sellProduct.addItemToServer(product);
+                    Toast.makeText(getContext(),"Product Successfully added",Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Please fill out all the fields given above", Toast.LENGTH_SHORT).show();
                 }
@@ -135,18 +148,28 @@ public class SellFragment extends Fragment {
         return view;
     }
 
+    private String getTime(){
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
+    }
+
     private void updateLabel() {
 
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "MM-dd-yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         productDate.setText(sdf.format(myCalendar.getTime()));
+
     }
 
     private void updateLocation(Location location) {
 
         Double lat = location.getLatitude();
         Double lgt = location.getLongitude();
-        String locationText = getAddress(lat,lgt);
+        String locationText = getAddress(lat, lgt);
         myLocation.setText(locationText);
     }
 
