@@ -16,4 +16,8 @@
     <string name="Name">nameKey</string>
     <string name="Email">emailKey</string>
     <string name="ProfilePicUri">profilePicUriKey</string>
+    <!-- Cloudinary Details -->
+    <string name="CloudName">drfm6ykw6</string>
+    <string name="ApiKey">479556712346146</string>
+    <string name="ApiSecret">kNNaC7FuzvQKe4b-BIesEOktV5E</string>
 </resources>
