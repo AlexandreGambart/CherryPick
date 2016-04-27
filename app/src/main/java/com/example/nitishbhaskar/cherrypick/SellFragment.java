@@ -24,6 +24,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -126,7 +127,25 @@ public class SellFragment extends Fragment {
             }
         });
 
-        myLocation.setOnClickListener(new View.OnClickListener() {
+
+        myLocation.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                String provider = locationManager.getBestProvider(criteria, true);
+                // Getting Current Location
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+                location = locationManager.getLastKnownLocation(provider);
+                updateLocation(location);
+                return true;
+            }
+        });
+        /*myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -141,13 +160,13 @@ public class SellFragment extends Fragment {
                 location = locationManager.getLastKnownLocation(provider);
                 updateLocation(location);
             }
-        });
+        });*/
 
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkProductName() && checkProductDescription() && checkProductPrice() && checkProductDate()) {
+                if (checkProductName() && checkProductDescription() && checkProductPrice() && checkProductDate()&& userLocation()) {
                     product = new HashMap();
                     product.put("productName", productName.getText().toString());
                     product.put("description", productDescription.getText().toString());

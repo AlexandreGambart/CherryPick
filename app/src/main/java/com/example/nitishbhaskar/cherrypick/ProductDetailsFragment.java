@@ -19,6 +19,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import java.security.Permission;
 import java.text.DecimalFormat;
@@ -64,6 +66,8 @@ public class ProductDetailsFragment extends Fragment implements
     TextView productDistance;
     LatLng productLatitudeLongitude;
     TextToSpeech tts;
+    ImageView productIcon;
+    Toolbar toolbar;
 
     /***
      * define Parameters here
@@ -104,6 +108,13 @@ public class ProductDetailsFragment extends Fragment implements
 
         TextView productName = (TextView) view.findViewById(R.id.details_productName);
         productDistance = (TextView) view.findViewById(R.id.details_productDistance);
+
+        final AppCompatActivity act = (AppCompatActivity) getActivity();
+        if (act.getSupportActionBar() != null) {
+            productIcon = (ImageView)act.findViewById(R.id.toolbarImage);
+        }
+        if(currentProduct.get("image") != null)
+            Picasso.with(getContext()).load((String) currentProduct.get("image")).into(productIcon);
         //TextView productId = (TextView) view.findViewById(R.id.details_productId);
         TextView productDatePosted = (TextView) view.findViewById(R.id.details_datePosted);
         TextView productDescription = (TextView) view.findViewById(R.id.details_productDescription);
