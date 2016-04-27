@@ -117,7 +117,7 @@ public class BuyFragment extends Fragment implements OnMapReadyCallback,
             @Override
             public void viewClickListener(View view, int position) {
                 HashMap<String, ?> product = (HashMap<String, ?>) productList.getItem(position);
-                activityClickListener.onCardViewClick(product);
+                activityClickListener.onCardViewClick(product,view);
             }
 
             @Override

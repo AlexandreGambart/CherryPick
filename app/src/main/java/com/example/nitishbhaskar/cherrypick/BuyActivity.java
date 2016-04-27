@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -114,13 +116,25 @@ public class BuyActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCardViewClick(HashMap<String, ?> product) {
+    public void onCardViewClick(HashMap<String, ?> product,View v) {
         mapfragmentView.setVisibility(View.GONE);
-        collapsingToolbarLayout.setTitle((String)product.get("productName"));
+        collapsingToolbarLayout.setTitle((String) product.get("productName"));
         toolBarImage.setVisibility(View.VISIBLE);
         toolBarImage.setImageResource(R.drawable.icon);
+
+        ProductDetailsFragment details = ProductDetailsFragment.newInstance(product);
+        details.setSharedElementEnterTransition(new DetailsTransition());
+        //details.setEnterTransition(new Fade());
+         details.setEnterTransition(new Slide());
+        details.setExitTransition(new Slide());
+        details.setSharedElementReturnTransition(new DetailsTransition());
+        //v.setTransitionName((String)movieData.getItem(position).get("name"));
+        //Integer a =(Integer) movieData.getItem(position).get("image");
+        //a.setTransitionName((String)movieData.getItem(position).get("name"));
+        TextView productNameTrans = (TextView)v.findViewById(R.id.productTitle);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.buyActivityContainer, ProductDetailsFragment.newInstance(product))
+                .addSharedElement(productNameTrans, productNameTrans.getTransitionName())
+                .replace(R.id.buyActivityContainer, details)
                 .addToBackStack("productInfo")
                 .commit();
     }

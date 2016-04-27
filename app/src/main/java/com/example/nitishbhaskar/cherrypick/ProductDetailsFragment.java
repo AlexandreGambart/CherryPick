@@ -121,6 +121,7 @@ public class ProductDetailsFragment extends Fragment implements
         //TextView productLocation = (TextView) view.findViewById(R.id.details_productLocation);
         TextView productPrice = (TextView) view.findViewById(R.id.details_productPrice);
         productName.setText((String) currentProduct.get("productName"));
+        productName.setTransitionName((String)currentProduct.get("productName"));
         //productId.setText((String) currentProduct.get("productId"));
         productDatePosted.setText("Date: " + (String) currentProduct.get("datePostedOn"));
         productDescription.setText((String) currentProduct.get("description"));
@@ -301,7 +302,7 @@ public class ProductDetailsFragment extends Fragment implements
                             .title("self defined marker")
                             .snippet("Hello!")
                             .position(lat).visible(true)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                            //.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
                     );
                 }
             });
@@ -342,7 +343,7 @@ public class ProductDetailsFragment extends Fragment implements
                     .bearing(90)               // Sets the tilt of the camera to 30 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)));
         } catch (SecurityException se) {
 
         }
@@ -371,14 +372,14 @@ public class ProductDetailsFragment extends Fragment implements
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+        tts.speak("The Product is available at "+text, TextToSpeech.QUEUE_FLUSH, map);
 
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void ttsGreater21(String text) {
         String utteranceId=this.hashCode() + "";
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+        tts.speak("The Product is available at "+text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
     public String getAddress(double latitude, double longitude) {
