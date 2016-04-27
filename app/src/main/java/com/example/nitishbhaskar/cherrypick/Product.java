@@ -7,7 +7,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties({ "selection" })
 public class Product implements  Serializable{
 
-    String datePostedOn, description, image, location, price, productId, productName;
+    String datePostedOn, description, image, location, price, productId, productName, sellerName, sellerEmail;
     
     public Product(){
 

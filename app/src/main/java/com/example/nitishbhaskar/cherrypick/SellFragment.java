@@ -3,6 +3,7 @@ package com.example.nitishbhaskar.cherrypick;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -154,6 +155,11 @@ public class SellFragment extends Fragment {
                     product.put("price", productPrice.getText().toString());
                     product.put("location", "" + location.getLatitude() + ", " + location.getLongitude());
                     product.put("productId", productName.getText().toString().replace(" ", "") + "_" + productDate.getText().toString() + "_" + getTime());
+                    SharedPreferences sharedpreferences = getContext().getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+                    Map<String, ?> savedStrings = sharedpreferences.getAll();
+                    //To identify who is the seller
+                    product.put("sellerEmail",savedStrings.get(getString(R.string.Email)));
+                    product.put("sellerName",savedStrings.get(getString(R.string.Name)));
                     Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePhotoIntent.resolveActivity(getContext().getPackageManager()) != null) {
                         // Create the File where the photo should go
