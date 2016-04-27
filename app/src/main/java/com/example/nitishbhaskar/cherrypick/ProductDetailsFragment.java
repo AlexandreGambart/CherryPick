@@ -301,7 +301,7 @@ public class ProductDetailsFragment extends Fragment implements
                             .title("self defined marker")
                             .snippet("Hello!")
                             .position(lat).visible(true)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))//.icon(BitmapDescriptorFactory.fromResource(R.drawable.flag))
                     );
                 }
             });
@@ -342,7 +342,7 @@ public class ProductDetailsFragment extends Fragment implements
                     .bearing(90)               // Sets the tilt of the camera to 30 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            mMap.addMarker(new MarkerOptions().position(place).title(getAddress(latitude, longitude)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         } catch (SecurityException se) {
 
         }
