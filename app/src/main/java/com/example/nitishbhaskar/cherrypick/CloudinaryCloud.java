@@ -45,8 +45,9 @@ public class CloudinaryCloud {
                     Cloudinary cloudinary = getInstance();
                     //Image compression
                     Bitmap bmp = BitmapFactory.decodeFile(fileLocation.toString());
+                    bmp = Bitmap.createScaledBitmap(bmp, 600, 400, false);
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 10, bos);
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 60, bos);
                     InputStream in = new ByteArrayInputStream(bos.toByteArray());
 
                     Map uploadDetails = cloudinary.uploader().upload(in, ObjectUtils.emptyMap());
