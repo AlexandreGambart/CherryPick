@@ -129,7 +129,7 @@ public class SellFragment extends Fragment {
         });
 
 
-        /*myLocation.setOnTouchListener(new View.OnTouchListener() {
+        myLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -159,8 +159,8 @@ public class SellFragment extends Fragment {
                 updateLocation(bestLocation);
                 return true;
             }
-        });*/
-        myLocation.setOnClickListener(new View.OnClickListener() {
+        });
+        /*myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -170,12 +170,12 @@ public class SellFragment extends Fragment {
                 if (ActivityCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+
                 }
                 location = locationManager.getLastKnownLocation(provider);
                 updateLocation(location);
             }
-        });
+        });*/
 
 
         submit.setOnClickListener(new View.OnClickListener() {
