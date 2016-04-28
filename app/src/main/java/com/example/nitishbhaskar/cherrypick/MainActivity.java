@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        setTitle("Cherry Pick");
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
