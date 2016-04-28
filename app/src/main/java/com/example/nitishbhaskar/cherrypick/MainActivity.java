@@ -1,14 +1,17 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     String name;
     String email;
     String photoUrl;
+    ViewGroup mAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mAppBar = (ViewGroup)findViewById(R.id.appBarMain);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -84,11 +89,25 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.buyNavigation) {
             intent = new Intent(this, BuyActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
 
         } else if (id == R.id.sellNavigation) {
             intent = new Intent(this,SellActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
 
         } else if (id == R.id.exchangeNavigation) {
 
@@ -96,7 +115,14 @@ public class MainActivity extends AppCompatActivity
             Firebase ref = new Firebase(getString(R.string.firebaseUrl));
             ref.unauth();
             intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -105,16 +131,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void tileClicked(int tileId) {
+    public void tileClicked(int tileId,View v) {
         Intent intent;
         switch (tileId) {
             case R.id.buyTile: //Navigates to Buy activity
                 intent = new Intent(this, BuyActivity.class);
-                startActivity(intent);
+               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(this,v, "testTransition");
+                    startActivity(intent, options.toBundle());
+                }
+                else {
+                   startActivity(intent);
+               }
                 break;
             case R.id.sellTile:
                 intent = new Intent(this,SellActivity.class);
-                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(this,v, "testTransition");
+                    startActivity(intent, options.toBundle());
+                }
+                else {
+                    startActivity(intent);
+                }
                 break;
         }
     }

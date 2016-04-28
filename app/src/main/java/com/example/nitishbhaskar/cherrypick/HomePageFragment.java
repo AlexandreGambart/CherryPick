@@ -1,6 +1,7 @@
 package com.example.nitishbhaskar.cherrypick;
 
 
+import android.animation.Animator;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class HomePageFragment extends Fragment {
     private static final String SHOWCASE_ID = "Sequence 1";
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private ITileClickListener tileClickListener = null;
+    RelativeLayout relativeLayout;
 
     public static HomePageFragment newInstance(int sectionNumber){
         HomePageFragment homePageFragment = new HomePageFragment();
@@ -50,7 +55,7 @@ public class HomePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+       View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         try {
             tileClickListener = (ITileClickListener) view.getContext();
@@ -62,7 +67,7 @@ public class HomePageFragment extends Fragment {
         Button sellTile = (Button)view.findViewById(R.id.sellTile);
         Button exchangeTile = (Button)view.findViewById(R.id.exchangeTile);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-
+        relativeLayout = (RelativeLayout)view.findViewById(R.id.homePageFragment);
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
 
@@ -82,17 +87,18 @@ public class HomePageFragment extends Fragment {
         sequence.addSequenceItem(fab,"Click this button to give voice commands to navigate to Buy, Sell, Exchange pages","GOT IT");
         sequence.start();
 
+
         buyTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tileClickListener.tileClicked(R.id.buyTile);
+                tileClickListener.tileClicked(R.id.buyTile,v);
             }
         });
 
         sellTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tileClickListener.tileClicked(R.id.sellTile);
+                tileClickListener.tileClicked(R.id.sellTile,v);
             }
         });
 
@@ -106,6 +112,7 @@ public class HomePageFragment extends Fragment {
 
         return view;
     }
+
 
 
     private void promptSpeechInput() {
@@ -137,7 +144,10 @@ public class HomePageFragment extends Fragment {
 
                     for(String text : result ){
                         if(text.toLowerCase().contains("buy")){
-                            tileClickListener.tileClicked(R.id.buyTile);
+                            tileClickListener.tileClicked(R.id.buyTile,getView());
+                        }
+                        if(text.toLowerCase().contains("sell")){
+                            tileClickListener.tileClicked(R.id.sellTile,getView());
                         }
                     }
                 }

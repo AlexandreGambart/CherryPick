@@ -11,7 +11,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:id="@+id/homePageFragment">
+    android:id="@+id/homePageFragment"
+    android:transitionName="testTransition">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:layout_column="0"
             android:padding="20dp"
             android:background="#AF4350"
-            >
+            android:transitionName="testTransition">
         </Button>
 
         <Button
@@ -57,7 +58,8 @@
             android:layout_row="0"
             android:layout_column="1"
             android:padding="20dp"
-            android:background="#AF4350" />
+            android:background="#AF4350"
+            android:transitionName="testTransition"/>
 
         <Button
             android:layout_width="wrap_content"

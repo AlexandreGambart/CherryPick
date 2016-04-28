@@ -1,12 +1,15 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +20,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +32,7 @@ import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BuyActivity extends AppCompatActivity
@@ -34,6 +41,7 @@ public class BuyActivity extends AppCompatActivity
     CollapsingToolbarLayout collapsingToolbarLayout;
     ImageView toolBarImage;
     View mapfragmentView;
+    ViewGroup mAppBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,7 @@ public class BuyActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AppBarLayout mAppBarLayout = (AppBarLayout)findViewById(R.id.appBar);
+        mAppBar = (ViewGroup)findViewById(R.id.appBar);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
         AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
         behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
@@ -89,15 +98,36 @@ public class BuyActivity extends AppCompatActivity
         Intent intent;
         if (id == R.id.Homepage) {
             intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
         }
         else if (id == R.id.buyNavigation) {
             intent = new Intent(this, BuyActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
 
         } else if (id == R.id.sellNavigation) {
             intent = new Intent(this,SellActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
 
         } else if (id == R.id.exchangeNavigation) {
 
@@ -106,7 +136,14 @@ public class BuyActivity extends AppCompatActivity
             Firebase ref = new Firebase(getString(R.string.firebaseUrl));
             ref.unauth();
             intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

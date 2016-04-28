@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.nitishbhaskar.cherrypick.BuyFragment"
     android:id="@+id/buyPageFragment"
+    android:transitionName="testTransition"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <!-- TODO: Update blank fragment layout -->

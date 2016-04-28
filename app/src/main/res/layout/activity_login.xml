@@ -10,7 +10,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.nitishbhaskar.cherrypick.LoginActivity"
-    android:background="#252338">
+    android:background="#252338"
+    android:transitionName="testTransition">
 
     <RelativeLayout
         android:layout_width="match_parent"

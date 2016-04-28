@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.nitishbhaskar.cherrypick.SellFragment"
     android:id="@+id/sellPageFragment"
+    android:transitionName="testTransition"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
