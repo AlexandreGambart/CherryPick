@@ -165,9 +165,7 @@ public class BuyActivity extends AppCompatActivity
          details.setEnterTransition(new Slide());
         details.setExitTransition(new Slide());
         details.setSharedElementReturnTransition(new DetailsTransition());
-        //v.setTransitionName((String)movieData.getItem(position).get("name"));
-        //Integer a =(Integer) movieData.getItem(position).get("image");
-        //a.setTransitionName((String)movieData.getItem(position).get("name"));
+
         TextView productNameTrans = (TextView)v.findViewById(R.id.productTitle);
         getSupportFragmentManager().beginTransaction()
                 .addSharedElement(productNameTrans, productNameTrans.getTransitionName())
