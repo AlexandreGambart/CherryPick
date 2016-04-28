@@ -65,7 +65,7 @@ public class HomePageFragment extends Fragment {
         }
         Button buyTile = (Button) view.findViewById(R.id.buyTile);
         Button sellTile = (Button)view.findViewById(R.id.sellTile);
-        Button exchangeTile = (Button)view.findViewById(R.id.exchangeTile);
+        Button myPageTile = (Button)view.findViewById(R.id.myPageTile);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         relativeLayout = (RelativeLayout)view.findViewById(R.id.homePageFragment);
         ShowcaseConfig config = new ShowcaseConfig();
@@ -81,8 +81,8 @@ public class HomePageFragment extends Fragment {
         sequence.addSequenceItem(sellTile,
                 "Click this button to sell your product", "GOT IT");
 
-        sequence.addSequenceItem(exchangeTile,
-                "Click this button to exchange your product with other products", "GOT IT");
+        sequence.addSequenceItem(myPageTile,
+                "Click this button to view your products", "GOT IT");
 
         sequence.addSequenceItem(fab,"Click this button to give voice commands to navigate to Buy, Sell, Exchange pages","GOT IT");
         sequence.start();
@@ -99,6 +99,13 @@ public class HomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 tileClickListener.tileClicked(R.id.sellTile,v);
+            }
+        });
+
+        myPageTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tileClickListener.tileClicked(R.id.myPageTile,v);
             }
         });
 

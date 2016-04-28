@@ -30,7 +30,6 @@ public class MyFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Product,M
         productViewHolder.productDescription.setText(product.getDescription());
         productViewHolder.productPrice.setText("Price: $"+product.getPrice());
         productViewHolder.productDatePostedOn.setText("Date: "+product.getDatePostedOn());
-        //TODO: Populate viewHolder by setting the movie attributes to cardview fields
         if(product.getImage() != null)
             Picasso.with(mContext).load(product.getImage()).into(productViewHolder.productImage);
         productViewHolder.productName.setTransitionName((String)product.getProductName());

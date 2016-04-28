@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
@@ -21,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +46,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.security.Permission;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.lang.Object;
@@ -68,6 +76,11 @@ public class ProductDetailsFragment extends Fragment implements
     TextToSpeech tts;
     ImageView productIcon;
     Toolbar toolbar;
+    File screenshotImage;
+    String productAddress;
+
+    SubActionButton messageBtn;
+    SubActionButton emailBtn;
 
     /***
      * define Parameters here
@@ -127,7 +140,94 @@ public class ProductDetailsFragment extends Fragment implements
         productDescription.setText((String) currentProduct.get("description"));
         //productLocation.setText((String) currentProduct.get("location"));
         productPrice.setText("Price: $" + (String) currentProduct.get("price"));
+
+
+        ImageView icon = new ImageView(getActivity());
+        icon.setImageDrawable(getResources().getDrawable(R.mipmap.share));
+        com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton fab =
+                new com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton.Builder(getActivity())
+                        .setContentView(icon).build();
+
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
+
+        ImageView messageImageView = new ImageView(getActivity());
+        messageImageView.setImageDrawable(getResources().getDrawable(R.mipmap.message));
+        messageBtn = itemBuilder.setContentView(messageImageView).build();
+
+        ImageView emailImageView = new ImageView(getActivity());
+        emailImageView.setImageDrawable(getResources().getDrawable(R.mipmap.email));
+        emailBtn = itemBuilder.setContentView(emailImageView).build();
+
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(getActivity())
+                .addSubActionView(messageBtn)
+                .addSubActionView(emailBtn)
+                .attachTo(fab)
+                .build();
+
+        floatingButtonsListeners();
+
         return view;
+    }
+
+    private void floatingButtonsListeners(){
+        messageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("sms:"));
+                String message = "Checkout the "+(String) currentProduct.get("productName")+ " on CherryPick app which is available at $"+(String) currentProduct.get("price");
+                sendIntent.putExtra("sms_body", message);
+                startActivity(sendIntent);
+            }
+        });
+
+        emailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeScreenshot();
+                String location = (String) currentProduct.get("location");
+                Double latitude = Double.parseDouble(location.split(",")[0]);
+                Double longitude = Double.parseDouble(location.split(",")[1]);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                String subject = "CherryPick : "+(String) currentProduct.get("productName")+" @ $"+(String) currentProduct.get("price");
+                String message = "Checkout the "+(String) currentProduct.get("productName")+ " on CherryPick app which is available at $"+(String) currentProduct.get("price");
+
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                Uri uri = Uri.fromFile(screenshotImage);
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                Intent mailer = Intent.createChooser(intent, null);
+                startActivity(mailer);
+            }
+        });
+    }
+
+    public void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = getActivity().getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            screenshotImage = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(screenshotImage);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (Throwable e) {
+            // Several error may come out with file handling or OOM
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -392,6 +492,7 @@ public class ProductDetailsFragment extends Fragment implements
                 String city = addresses.get(0).getAddressLine(1);
                 String country = addresses.get(0).getAddressLine(2);
                 placeAddress = address + ", " + city + ", " + country;
+
                 Log.d("TAG", "address = " + address + ", city = " + city + ", country = " + country);
             } catch (Exception e) {
                 e.printStackTrace();

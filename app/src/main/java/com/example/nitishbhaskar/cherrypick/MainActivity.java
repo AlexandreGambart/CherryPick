@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         setTitle("Cherry Pick");
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -155,6 +156,11 @@ public class MainActivity extends AppCompatActivity
                 else {
                     startActivity(intent);
                 }
+                break;
+
+            case R.id.myPageTile:
+                intent = new Intent(this, MyPageActivity.class);
+                startActivity(intent);
                 break;
         }
     }

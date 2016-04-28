@@ -129,7 +129,7 @@ public class SellFragment extends Fragment {
         });
 
 
-        myLocation.setOnTouchListener(new View.OnTouchListener() {
+        /*myLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -159,8 +159,8 @@ public class SellFragment extends Fragment {
                 updateLocation(bestLocation);
                 return true;
             }
-        });
-        /*myLocation.setOnClickListener(new View.OnClickListener() {
+        });*/
+        myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -175,7 +175,7 @@ public class SellFragment extends Fragment {
                 location = locationManager.getLastKnownLocation(provider);
                 updateLocation(location);
             }
-        });*/
+        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -240,11 +240,12 @@ public class SellFragment extends Fragment {
     }
 
     private void updateLocation(Location location) {
-
-        Double lat = location.getLatitude();
-        Double lgt = location.getLongitude();
-        String locationText = getAddress(lat, lgt);
-        myLocation.setText(locationText);
+        if(location != null) {
+            Double lat = location.getLatitude();
+            Double lgt = location.getLongitude();
+            String locationText = getAddress(lat, lgt);
+            myLocation.setText(locationText);
+        }
     }
 
     public String getAddress(double latitude, double longitude) {

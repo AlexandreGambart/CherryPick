@@ -17,7 +17,7 @@
         <item
             android:id="@+id/exchangeNavigation"
             android:icon="@drawable/exchangelogo"
-            android:title="Exchange" />
+            android:title="My Page" />
     </group>
 
     <item android:title="">

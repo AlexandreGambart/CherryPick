@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Product implements  Serializable{
 
     String datePostedOn, description, image, location, price, productId, productName, sellerName, sellerEmail;
+    Boolean isSold;
     
     public Product(){
 
@@ -83,4 +84,11 @@ public class Product implements  Serializable{
         this.sellerEmail = sellerEmail;
     }
 
+    public Boolean getIsSold() {
+        return isSold;
+    }
+
+    public void setIsSold(Boolean isSold) {
+        this.isSold = isSold;
+    }
 }

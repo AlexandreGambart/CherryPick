@@ -217,7 +217,7 @@ public class BuyFragment extends Fragment implements OnMapReadyCallback,
             mMap.getUiSettings().setCompassEnabled(false);
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             mMap.setMyLocationEnabled(true);
-
+            try{ Thread.sleep(1000); }catch(InterruptedException e){ }
             for (Map product : productList.getProductList()) {
                 String location = (String) product.get("location");
                 Double latitude = Double.parseDouble(location.split(",")[0]);
