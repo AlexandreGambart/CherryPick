@@ -111,7 +111,15 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.exchangeNavigation) {
-
+            intent = new Intent(this, MyPageActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
         } else if (id == R.id.logoutApp) {
             Firebase ref = new Firebase(getString(R.string.firebaseUrl));
             ref.unauth();
