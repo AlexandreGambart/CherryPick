@@ -60,9 +60,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         setTitle("Cherry Pick");
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
@@ -168,7 +166,14 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.myPageTile:
                 intent = new Intent(this, MyPageActivity.class);
-                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(this,v, "testTransition");
+                    startActivity(intent, options.toBundle());
+                }
+                else {
+                    startActivity(intent);
+                }
                 break;
         }
     }

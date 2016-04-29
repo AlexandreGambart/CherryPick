@@ -46,6 +46,28 @@ public class MyPageActivity extends AppCompatActivity
         viewPagerAdapter = new MyPageViewPagerAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                final float normalized_position = Math.abs(Math.abs(position) - 1);
+                // page.setScaleX(normalized_position / 2 + 0.5f);
+                // page.setScaleY(normalized_position/2+0.5f);
+
+
+                //page.setAlpha(normalized_position);
+                page.setRotationY(position * -30);
+                page.setTranslationX(page.getWidth() * -position);
+
+                if (position <= -1.0F || position >= 1.0F) {
+                    page.setAlpha(0.0F);
+                } else if (position == 0.0F) {
+                    page.setAlpha(1.0F);
+                } else {
+                    // position is between -1.0F & 0.0F OR 0.0F & 1.0F
+                    page.setAlpha(1.0F - Math.abs(position));
+                }
+            }
+        });
         viewPager.setCurrentItem(0);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
