@@ -356,8 +356,10 @@ public class SellFragment extends Fragment {
                 try {
                     CloudinaryCloud.upload(photoFile, product);
                     //Delete old product once edited
-                    ProductData products = new ProductData();
-                    products.removeItemFromServer(currentProduct);
+                    if(currentProduct != null) {
+                        ProductData products = new ProductData();
+                        products.removeItemFromServer(currentProduct);
+                    }
                     navigationListener.navigateToHome();
                 } catch (Exception e) {
                     e.printStackTrace();

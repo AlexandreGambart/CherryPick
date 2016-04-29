@@ -73,7 +73,7 @@ public class ProductData {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("Child Added", dataSnapshot.toString());
-                HashMap<String, String> product = (HashMap<String, String>) dataSnapshot.getValue();
+                HashMap<String, ?> product = (HashMap<String, ?>) dataSnapshot.getValue();
                 onItemAddedToCloud(product);
             }
 
@@ -114,33 +114,11 @@ public class ProductData {
         if(product!=null){
             String id = (String) product.get("productId");
             mref.child(id).setValue(product);
-            mref.updateChildren((Map<String, Object>) product);
-        }
-    }
-
-    public void updateItemOnServer(Map<String, ?> product){
-        if(product!=null){
-            mref.updateChildren((Map<String, Object>) product);
         }
     }
 
     private void onItemAddedToCloud(HashMap item){
-        /*String id = (String) item.get("productId");
-        int insertPosition = 0;
-        for(int i=0;i< productList.size();i++){
-            HashMap movie = (HashMap) productList.get(i);
-            String mid = (String) movie.get("productId");
-            if(mid.equals(id))
-                return;
-            if(mid.compareTo(id)<0)
-                insertPosition = i+1;
-            else
-                break;
-        }*/
         productList.add(item);
-        //Log.d("NotifyInsert", id);
-        //if(myFirebaseRecyclerAdapter!=null);
-           // myFirebaseRecyclerAdapter.notification(mContext,item);
     }
 
     private void onItemRemovedFromCloud(HashMap item){
@@ -179,23 +157,6 @@ public class ProductData {
             }
         }
     }
-
-
-    /*private HashMap createProduct(String name, int image, String description, String year,
-                                String length, double rating, String director, String stars, String url) {
-        HashMap product = new HashMap();
-        movie.put("image",image);
-        movie.put("name", name);
-        movie.put("description", description);
-        movie.put("year", year);
-        movie.put("length",length);
-        movie.put("rating",rating);
-        movie.put("director",director);
-        movie.put("stars",stars);
-        movie.put("url",url);
-        movie.put("selection",false);
-        return movie;
-    }*/
 
     //code to use filter option
     public void flushFilter(){
