@@ -143,8 +143,6 @@ public class ProductDetailsFragment extends Fragment implements
         productDescription.setText((String) currentProduct.get("description"));
         //productLocation.setText((String) currentProduct.get("location"));
         productPrice.setText("Price: $" + (String) currentProduct.get("price"));
-
-        notification();
         ImageView icon = new ImageView(getActivity());
         icon.setImageDrawable(getResources().getDrawable(R.mipmap.share));
         com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton fab =
@@ -232,39 +230,6 @@ public class ProductDetailsFragment extends Fragment implements
             e.printStackTrace();
         }
     }
-
-    public void notification(){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getContext())
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000})
-                        .setContentTitle((String) currentProduct.get("productName") + " @ $"+(String) currentProduct.get("price"))
-                        .setContentText((String) currentProduct.get("description"));
-// Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(getActivity(), MainActivity.class);
-
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
-// Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-        mNotificationManager.notify(10, mBuilder.build());
-    }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

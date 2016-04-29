@@ -133,8 +133,8 @@ public class ProductData {
         }*/
         productList.add(item);
         //Log.d("NotifyInsert", id);
-        //if(myFirebaseRecylerAdapter!=null);
-        //myFirebaseRecylerAdapter.notifyItemInserted(insertPosition);
+        //if(myFirebaseRecyclerAdapter!=null);
+           // myFirebaseRecyclerAdapter.notification(mContext,item);
     }
 
     private void onItemRemovedFromCloud(HashMap item){

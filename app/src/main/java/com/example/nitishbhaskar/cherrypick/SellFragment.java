@@ -4,6 +4,7 @@ package com.example.nitishbhaskar.cherrypick;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationListener;
 import android.net.Uri;
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -36,6 +37,8 @@ import android.widget.Toast;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import com.google.android.gms.location.LocationRequest;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,7 +70,7 @@ public class SellFragment extends Fragment {
     FancyButton submit;
     DatePickerDialog.OnDateSetListener date;
     ProductData sellProduct;
-    Location location;
+    Location currentLocation;
     HashMap product;
     INavigate navigationListener;
     LocationManager mLocationManager;
@@ -83,6 +86,22 @@ public class SellFragment extends Fragment {
         sellFragment.setArguments(args);
         return sellFragment;
     }
+
+    LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            currentLocation = location;
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
 
 
     @Override
@@ -119,6 +138,21 @@ public class SellFragment extends Fragment {
 
         };
 
+        mLocationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return view;
+        }
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+                0, locationListener);
+
         productDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +162,7 @@ public class SellFragment extends Fragment {
             }
         });
 
-
+/*
         myLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -138,13 +172,7 @@ public class SellFragment extends Fragment {
                 Location bestLocation = null;
                 for (String provider : providers) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+
                         return false;
                     }
                     Location l = mLocationManager.getLastKnownLocation(provider);
@@ -157,13 +185,14 @@ public class SellFragment extends Fragment {
                     }
                 }
                 updateLocation(bestLocation);
-                return true;
+                return  true;
             }
-        });
-        /*myLocation.setOnClickListener(new View.OnClickListener() {
+        });*/
+        myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
+                /*LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                 Criteria criteria = new Criteria();
                 String provider = locationManager.getBestProvider(criteria, true);
                 // Getting Current Location
@@ -171,11 +200,11 @@ public class SellFragment extends Fragment {
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                }
-                location = locationManager.getLastKnownLocation(provider);
-                updateLocation(location);
+                }*/
+                //location = locationManager.getLastKnownLocation(provider);
+                updateLocation(currentLocation);
             }
-        });*/
+        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +216,7 @@ public class SellFragment extends Fragment {
                     product.put("description", productDescription.getText().toString());
                     product.put("datePostedOn", productDate.getText().toString());
                     product.put("price", productPrice.getText().toString());
-                    product.put("location", "" + location.getLatitude() + ", " + location.getLongitude());
+                    product.put("location", "" + currentLocation.getLatitude() + ", " + currentLocation.getLongitude());
                     product.put("productId", productName.getText().toString().replace(" ", "") + "_" + productDate.getText().toString() + "_" + getTime());
                     SharedPreferences sharedpreferences = getContext().getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
                     Map<String, ?> savedStrings = sharedpreferences.getAll();
