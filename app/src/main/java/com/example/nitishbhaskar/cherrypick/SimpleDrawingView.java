@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,7 +42,9 @@ public class SimpleDrawingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawPath(path, drawPaint);
+
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

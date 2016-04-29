@@ -43,11 +43,12 @@ public class BarCodeFragment extends Fragment {
     TextView formatTxt;
     TextView outputTextView;
     CameraManager cameraManager;
-    DownLoadTask task;
+
     FancyButton scan;
 
     public BarCodeFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -104,6 +105,7 @@ public class BarCodeFragment extends Fragment {
 
     public void scanNow(View view){
         IntentIntegrator integrator = new IntentIntegrator(getActivity());
+
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
         integrator.setPrompt("Scan a Bar Code");
         integrator.setResultDisplayDuration(0);
@@ -113,93 +115,8 @@ public class BarCodeFragment extends Fragment {
         //int c = findFrontFacingCameraID();
         integrator.setCameraId(c);// Use a specific camera of the device
         integrator.initiateScan();
+        
     }
 
-    public class DownLoadTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            String result = "";
-            URL url;
-            HttpURLConnection urlConnection = null;
-
-            try {
-                url = new URL(urls[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-                int data = reader.read();
-                while (data != -1) {
-                    char current = (char) data;
-                    result = result + current;
-                    data = reader.read();
-                }
-                return result;
-            } catch (Exception e) {
-                Toast.makeText(getContext(), "Could not Product", Toast.LENGTH_LONG);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-
-            JSONObject jsonObject = null;
-            try {
-                String message="";
-                jsonObject = new JSONObject(result);
-                // String weatherInfo = jsonObject.getString("weather");
-                String productDetails = jsonObject.toString();
-                Log.i("Product details", productDetails);
-                // JSONArray arr = new JSONArray(productDetails);
-                //for (int i = 0; i < arr.length(); i++) {
-                //  JSONObject jsonPart = arr.getJSONObject(i);
-                // String main = "";
-                //String description = "";
-                //main = jsonPart.getString("main");
-                //description = jsonPart.getString("description");
-                //if (main != "" && description != "") {
-                //  message = message + main + ": " + description + "\r\n";
-                //}
-                //}
-                //if(message!=""){
-                outputTextView.setText("ProductDetails: "+productDetails);
-                //}else{
-                //  Toast.makeText(getApplicationContext(),"Could not find weather",Toast.LENGTH_LONG);
-                //}
-            } catch (JSONException e) {
-                Toast.makeText(getContext(), "Could not find product", Toast.LENGTH_LONG);
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
-        if (scanningResult != null) {
-//we have a result
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-
-// display it on screen
-            formatTxt.setText("FORMAT: " + scanFormat);
-            contentTxt.setText("CONTENT: " + scanContent);
-            try {
-
-                task = new DownLoadTask();
-                task.execute("http://api.upcdatabase.org/json/8e268419dbb13d51c153f31bc7884c88/" +scanContent);
-                //task.execute("http://www.searchupc.com/handlers/upcsearch.ashx?request_type=3&access_token=E9CB1A54-9B91-4AD3-B4A3-77B3E7E261AB&upc=/"+scanContent);
-                // task.execute("http://localhost:59798/api/BarCode");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "Could not find product", Toast.LENGTH_LONG);
-            }
-           // super.onActivityResult(requestCode, resultCode, intent);
-        }
-    }
 
 }
