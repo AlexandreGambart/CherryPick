@@ -80,6 +80,20 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_productSeller"
+                android:text="Seller"
+                android:layout_below="@+id/details_productDescription"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/contact_mail"
+                android:id="@+id/contactSeller"
+                android:layout_below="@+id/details_productSeller"/>
 
         </RelativeLayout>
     </LinearLayout>

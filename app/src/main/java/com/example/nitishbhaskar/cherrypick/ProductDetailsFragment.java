@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -63,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.lang.Object;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -82,6 +84,9 @@ public class ProductDetailsFragment extends Fragment implements
     Toolbar toolbar;
     File screenshotImage;
     String productAddress;
+    TextView contactSeller;
+    String sellerEmail;
+    String sellerName;
 
     SubActionButton messageBtn;
     SubActionButton emailBtn;
@@ -125,6 +130,14 @@ public class ProductDetailsFragment extends Fragment implements
         TextView productName = (TextView) view.findViewById(R.id.details_productName);
         productDistance = (TextView) view.findViewById(R.id.details_productDistance);
 
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+        Map<String, ?> savedStrings = sharedpreferences.getAll();
+        sellerEmail = (String) savedStrings.get(getString(R.string.Name));
+        sellerName = (String) savedStrings.get(getString(R.string.Email));
+
+        TextView sellerNameView = (TextView) view.findViewById(R.id.details_productSeller);
+        sellerNameView.setText("Seller: "+(String)currentProduct.get("sellerName"));
+
         final AppCompatActivity act = (AppCompatActivity) getActivity();
         if (act.getSupportActionBar() != null) {
             productIcon = (ImageView)act.findViewById(R.id.toolbarImage);
@@ -136,8 +149,10 @@ public class ProductDetailsFragment extends Fragment implements
         TextView productDescription = (TextView) view.findViewById(R.id.details_productDescription);
         //TextView productLocation = (TextView) view.findViewById(R.id.details_productLocation);
         TextView productPrice = (TextView) view.findViewById(R.id.details_productPrice);
+        contactSeller = (TextView) view.findViewById(R.id.contactSeller);
+        contactSellerListener();
         productName.setText((String) currentProduct.get("productName"));
-        productName.setTransitionName((String)currentProduct.get("productName"));
+        productName.setTransitionName((String) currentProduct.get("productName"));
         //productId.setText((String) currentProduct.get("productId"));
         productDatePosted.setText("Date: " + (String) currentProduct.get("datePostedOn"));
         productDescription.setText((String) currentProduct.get("description"));
@@ -168,6 +183,28 @@ public class ProductDetailsFragment extends Fragment implements
         floatingButtonsListeners();
 
         return view;
+    }
+
+    private void contactSellerListener(){
+        contactSeller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String location = (String) currentProduct.get("location");
+                Double latitude = Double.parseDouble(location.split(",")[0]);
+                Double longitude = Double.parseDouble(location.split(",")[1]);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                String subject = "Regarding - CherryPick : "+(String) currentProduct.get("productName");
+                String message = "Hi "+sellerName+",\nI am contacting you regarding "+(String) currentProduct.get("productName")+
+                        " on CherryPick app which is available at $"+(String) currentProduct.get("price");
+
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                intent.putExtra(Intent.EXTRA_EMAIL, sellerEmail);
+                Intent mailer = Intent.createChooser(intent, null);
+                startActivity(mailer);
+            }
+        });
     }
 
     private void floatingButtonsListeners(){
