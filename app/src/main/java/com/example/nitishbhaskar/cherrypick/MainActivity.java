@@ -189,4 +189,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+
+            super.onBackPressed();
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent);
+            }
+            else {
+                startActivity(intent);
+            }
+
+
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
+
 }

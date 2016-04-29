@@ -119,4 +119,28 @@ public class SellActivity extends AppCompatActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+
+            super.onBackPressed();
+            Intent intent = new Intent(SellActivity.this,MainActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent);
+            }
+            else {
+                startActivity(intent);
+            }
+
+
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
 }

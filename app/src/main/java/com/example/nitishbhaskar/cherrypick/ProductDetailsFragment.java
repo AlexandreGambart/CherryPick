@@ -187,12 +187,14 @@ public class ProductDetailsFragment extends Fragment implements
         ImageView emailImageView = new ImageView(getActivity());
         emailImageView.setImageDrawable(getResources().getDrawable(R.mipmap.email));
         emailBtn = itemBuilder.setContentView(emailImageView).build();
+        itemBuilder.setTheme(R.style.AppTheme);
 
         FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(getActivity())
                 .addSubActionView(messageBtn)
                 .addSubActionView(emailBtn)
                 .attachTo(fab)
                 .build();
+        ;
 
         floatingButtonsListeners();
 
@@ -576,5 +578,7 @@ public class ProductDetailsFragment extends Fragment implements
         }
         return placeAddress;
     }
+
+
 
 }

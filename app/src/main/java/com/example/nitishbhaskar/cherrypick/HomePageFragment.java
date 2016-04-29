@@ -150,14 +150,14 @@ public class HomePageFragment extends Fragment {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                     for(String text : result ){
-                        if(text.toLowerCase().contains("buy")){
+                        if(text.toLowerCase().contains("buy")||text.toLowerCase().contains("products")){
                             tileClickListener.tileClicked(R.id.buyTile,getView());
                         }
                         if(text.toLowerCase().contains("sell")){
                             tileClickListener.tileClicked(R.id.sellTile,getView());
                         }
                         if(text.toLowerCase().contains("my page")){
-                            tileClickListener.tileClicked(R.id.sellTile,getView());
+                            tileClickListener.tileClicked(R.id.exchangeTile,getView());
                         }
                     }
                 }

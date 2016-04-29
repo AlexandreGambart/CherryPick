@@ -1,0 +1,176 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:fancy="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.nitishbhaskar.cherrypick.SellFragment"
+        android:id="@+id/sellPageFragment"
+        android:transitionName="testTransition"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sellheader"
+            android:text="Product Data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sellheader"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textColorHint="#C4C4C9"
+            android:id="@+id/pNameLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:singleLine="true"
+                android:drawableTint= "#C4C4C9"
+                android:hint="Enter the product name"
+                android:inputType="text"
+                android:nextFocusDown="@+id/pDescription"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pNameLayout"
+            android:textColorHint="#C4C4C9"
+            android:id="@+id/pDescriptionLayout"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="#C4C4C9"
+                android:textSize="20sp"
+                android:imeOptions="actionDone"
+                android:padding="14dp"
+                android:drawableTint= "#C4C4C9"
+                android:hint="Enter product's description"
+                android:inputType="textMultiLine"
+                android:nextFocusDown="@+id/pPrice"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pDescriptionLayout"
+            android:textColorHint="#C4C4C9"
+            android:id="@+id/pPriceLayout"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pPrice"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="#C4C4C9"
+                android:textSize="20sp"
+                android:imeOptions="actionDone"
+                android:padding="14dp"
+                android:drawableTint= "#C4C4C9"
+                android:hint="Enter product's price in $"
+                android:inputType="numberDecimal"
+                android:nextFocusDown="@+id/pDate"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pPriceLayout"
+            android:textColorHint="#C4C4C9"
+            android:id="@+id/pDateLayout"
+
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="#C4C4C9"
+                android:textSize="20sp"
+                android:imeOptions="actionDone"
+                android:padding="14dp"
+                android:drawableTint= "#C4C4C9"
+                android:hint="Pick the Date"
+                android:inputType="none"
+                android:clickable="true"
+                android:focusable="false"
+                android:nextFocusDown="@+id/pLocation"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pDateLayout"
+            android:textColorHint="#C4C4C9"
+            android:id="@+id/pLocationLayout"
+
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/pLocation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="#C4C4C9"
+                android:textSize="20sp"
+                android:imeOptions="actionDone"
+                android:padding="14dp"
+                android:drawableTint= "#C4C4C9"
+                android:hint="Your location"
+                android:inputType="none"
+                android:clickable="true"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/submitButton"
+            android:layout_below="@+id/pLocationLayout"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:padding="15dp"
+            fancy:fb_textSize="20sp"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#D24958"
+            fancy:fb_focusColor="#683045"
+            fancy:fb_radius="10dp"
+            fancy:fb_text="Snap and Submit"
+            fancy:fb_textColor="#C4C4C9"/>
+
+    </RelativeLayout>
+</ScrollView>
