@@ -17,7 +17,7 @@ public class MyPageViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return BuyFragment.newInstance(R.id.buyPageFragment);
+        return new BarCodeFragment();
     }
 
     @Override
