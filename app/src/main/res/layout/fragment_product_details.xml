@@ -94,6 +94,12 @@
                 android:drawableRight="@mipmap/contact_mail"
                 android:id="@+id/contactSeller"
                 android:layout_below="@+id/details_productSeller"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deleteBtn"
+                android:text="Delete"
+                android:layout_below="@+id/contactSeller"/>
 
         </RelativeLayout>
     </LinearLayout>

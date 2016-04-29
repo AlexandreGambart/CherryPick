@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,8 +86,10 @@ public class ProductDetailsFragment extends Fragment implements
     File screenshotImage;
     String productAddress;
     TextView contactSeller;
-    String sellerEmail;
+    String userEmail;
+    String userName;
     String sellerName;
+    String sellerEmail;
 
     SubActionButton messageBtn;
     SubActionButton emailBtn;
@@ -132,11 +135,18 @@ public class ProductDetailsFragment extends Fragment implements
 
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
         Map<String, ?> savedStrings = sharedpreferences.getAll();
-        sellerEmail = (String) savedStrings.get(getString(R.string.Name));
-        sellerName = (String) savedStrings.get(getString(R.string.Email));
+        userEmail = (String) savedStrings.get(getString(R.string.Email));
+        userName = (String) savedStrings.get(getString(R.string.Name));
 
         TextView sellerNameView = (TextView) view.findViewById(R.id.details_productSeller);
+        sellerName = (String)currentProduct.get("sellerName");
+        sellerEmail = (String)currentProduct.get("sellerEmail");
         sellerNameView.setText("Seller: "+(String)currentProduct.get("sellerName"));
+
+        Button deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
+        //Enable delete button if seller is viewing the product
+        if(!userEmail.equals(sellerEmail))
+            deleteBtn.setVisibility(View.GONE);
 
         final AppCompatActivity act = (AppCompatActivity) getActivity();
         if (act.getSupportActionBar() != null) {
@@ -200,7 +210,7 @@ public class ProductDetailsFragment extends Fragment implements
 
                 intent.putExtra(Intent.EXTRA_SUBJECT, subject);
                 intent.putExtra(Intent.EXTRA_TEXT, message);
-                intent.putExtra(Intent.EXTRA_EMAIL, sellerEmail);
+                intent.putExtra(Intent.EXTRA_EMAIL,new String[] { sellerEmail} );
                 Intent mailer = Intent.createChooser(intent, null);
                 startActivity(mailer);
             }
