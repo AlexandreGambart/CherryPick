@@ -74,14 +74,16 @@ public class SellFragment extends Fragment {
     HashMap product;
     INavigate navigationListener;
     LocationManager mLocationManager;
+    static HashMap<String, ?> currentProduct;
 
     public SellFragment() {
         // Required empty public constructor
     }
 
-    public static SellFragment newInstance(int sectionNumber) {
+    public static SellFragment newInstance(int sectionNumber, HashMap<String, ?> product) {
         SellFragment sellFragment = new SellFragment();
         Bundle args = new Bundle();
+        currentProduct = product;
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         sellFragment.setArguments(args);
         return sellFragment;
@@ -124,6 +126,14 @@ public class SellFragment extends Fragment {
         myCalendar = Calendar.getInstance();
         submit = (FancyButton) view.findViewById(R.id.submitButton);
         sellProduct = new ProductData();
+
+        if(currentProduct != null){
+            productName.setText((String)currentProduct.get("productName"));
+            productDescription.setText((String)currentProduct.get("description"));
+            productPrice.setText((String)currentProduct.get("price"));
+            productDate.setText((String)currentProduct.get("datePostedOn"));
+
+        }
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -345,6 +355,9 @@ public class SellFragment extends Fragment {
             if (resultCode != 100) {
                 try {
                     CloudinaryCloud.upload(photoFile, product);
+                    //Delete old product once edited
+                    ProductData products = new ProductData();
+                    products.removeItemFromServer(currentProduct);
                     navigationListener.navigateToHome();
                 } catch (Exception e) {
                     e.printStackTrace();

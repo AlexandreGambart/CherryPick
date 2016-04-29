@@ -15,9 +15,13 @@ import android.view.ViewGroup;
 
 import com.firebase.client.Firebase;
 
+import java.util.HashMap;
+
 public class SellActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, INavigate{
         ViewGroup mAppBar;
+    HashMap<String, ?> currentProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +36,13 @@ public class SellActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
+        currentProduct = (HashMap<String, ?>) getIntent().getSerializableExtra("currentProduct");
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.sellActivityContainer, SellFragment.newInstance(R.id.sellPageFragment))
+                .replace(R.id.sellActivityContainer, SellFragment.newInstance(R.id.sellPageFragment, currentProduct))
                 .commit();
     }
 

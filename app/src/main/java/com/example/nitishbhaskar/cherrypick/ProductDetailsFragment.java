@@ -93,6 +93,7 @@ public class ProductDetailsFragment extends Fragment implements
 
     SubActionButton messageBtn;
     SubActionButton emailBtn;
+    IModify btnClickListener;
 
     /***
      * define Parameters here
@@ -143,10 +144,13 @@ public class ProductDetailsFragment extends Fragment implements
         sellerEmail = (String)currentProduct.get("sellerEmail");
         sellerNameView.setText("Seller: "+(String)currentProduct.get("sellerName"));
 
+        Button editBtn = (Button) view.findViewById(R.id.editBtn);
         Button deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
         //Enable delete button if seller is viewing the product
-        if(!userEmail.equals(sellerEmail))
+        if(!userEmail.equals(sellerEmail)) {
+            editBtn.setVisibility(View.GONE);
             deleteBtn.setVisibility(View.GONE);
+        }
 
         final AppCompatActivity act = (AppCompatActivity) getActivity();
         if (act.getSupportActionBar() != null) {
@@ -191,6 +195,28 @@ public class ProductDetailsFragment extends Fragment implements
                 .build();
 
         floatingButtonsListeners();
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Calls method in buy activity.
+                btnClickListener.modifyBtnClick(R.id.editBtn, currentProduct);
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnClickListener.modifyBtnClick(R.id.deleteBtn, currentProduct);
+            }
+        });
+
+        try {
+            btnClickListener = (IModify) view.getContext();
+        }
+        catch(ClassCastException e){
+            throw new ClassCastException("Implementation missed out.");
+        }
 
         return view;
     }

@@ -103,9 +103,9 @@ public class ProductData {
         });
     }
 
-    public void removeItemFromServer(Map<String, ?> movie){
-        if(movie!=null){
-            String id = (String) movie.get("productId");
+    public void removeItemFromServer(Map<String, ?> product){
+        if(product!=null){
+            String id = (String) product.get("productId");
             mref.child(id).removeValue();
         }
     }
@@ -114,7 +114,13 @@ public class ProductData {
         if(product!=null){
             String id = (String) product.get("productId");
             mref.child(id).setValue(product);
+            mref.updateChildren((Map<String, Object>) product);
+        }
+    }
 
+    public void updateItemOnServer(Map<String, ?> product){
+        if(product!=null){
+            mref.updateChildren((Map<String, Object>) product);
         }
     }
 

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BuyActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ICardClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, ICardClickListener, IModify{
 
     CollapsingToolbarLayout collapsingToolbarLayout;
     ImageView toolBarImage;
@@ -197,5 +197,27 @@ public class BuyActivity extends AppCompatActivity
             getFragmentManager().popBackStack();
         }
 
+    }
+
+    @Override
+    public void modifyBtnClick(int buttonId, HashMap<String, ?> currentProduct) {
+        if(buttonId == R.id.editBtn){
+            Intent intent = new Intent(this,SellActivity.class);
+            intent.putExtra("currentProduct",currentProduct);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
+        }
+
+        if(buttonId == R.id.deleteBtn){
+            ProductData products = new ProductData();
+            products.removeItemFromServer(currentProduct);
+            onBackPressed();
+        }
     }
 }
