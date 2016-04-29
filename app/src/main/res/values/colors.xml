@@ -5,4 +5,5 @@
     <color name="colorAccent">#0099ff</color>
     <color name="colorCardDetails">#FAAAAA</color>
     <color name="textColor">#C4C4C9</color>
+    <color name="tabtitlecolor">#FFFFFF</color>
 </resources>

@@ -17,7 +17,8 @@
         app:tabGravity="fill"
         app:tabMode="scrollable"
         android:id="@+id/tabs"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:theme="@style/TitleColor">
 
     </android.support.design.widget.TabLayout>
 
