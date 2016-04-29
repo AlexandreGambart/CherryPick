@@ -198,7 +198,7 @@ public class BarCodeFragment extends Fragment {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Could not find product", Toast.LENGTH_LONG);
             }
-            super.onActivityResult(requestCode, resultCode, intent);
+           // super.onActivityResult(requestCode, resultCode, intent);
         }
     }
 

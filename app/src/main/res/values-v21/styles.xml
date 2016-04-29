@@ -13,6 +13,17 @@
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
 
 
+
+    </style>
+
+    <style name="TitleColor" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/tabtitlecolor</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Hint color and label color in FALSE state -->
+
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
     </style>
 
     <style name="AppTheme.NoActionBar">
