@@ -152,6 +152,17 @@ public class MyPageActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }
+        else if (id == R.id.aboutUs) {
+            intent = new Intent(this, AboutUsActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
+            }
+            else {
+                startActivity(intent);
+            }
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
