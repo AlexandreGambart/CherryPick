@@ -196,7 +196,6 @@ public class ProductDetailsFragment extends Fragment implements
                 .addSubActionView(emailBtn)
                 .attachTo(fab)
                 .build();
-        ;
 
         floatingButtonsListeners();
 
