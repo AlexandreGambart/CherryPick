@@ -1,6 +1,8 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -11,11 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SellActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, INavigate{
@@ -39,6 +46,16 @@ public class SellActivity extends AppCompatActivity
         currentProduct = (HashMap<String, ?>) getIntent().getSerializableExtra("currentProduct");
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+        Map<String, ?> savedStrings = sharedpreferences.getAll();
+        View navHeaderView = navigationView.getHeaderView(0);
+        TextView username = (TextView) navHeaderView.findViewById(R.id.username);
+        TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
+        ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
+        username.setText((String) savedStrings.get(getString(R.string.Name)));
+        userEmail.setText((String) savedStrings.get(getString(R.string.Email)));
+        Picasso.with(getApplicationContext()).load((String) savedStrings.get(getString(R.string.ProfilePicUri))).into(profileImage);
 
         navigationView.setNavigationItemSelectedListener(this);
         getSupportFragmentManager().beginTransaction()

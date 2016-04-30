@@ -1,6 +1,8 @@
 package com.example.nitishbhaskar.cherrypick;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
@@ -17,11 +19,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +37,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ITileClickListener {
@@ -85,6 +91,16 @@ public class MyPageActivity extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.MyPREFERENCES), Context.MODE_PRIVATE);
+        Map<String, ?> savedStrings = sharedpreferences.getAll();
+        View navHeaderView = navigationView.getHeaderView(0);
+        TextView username = (TextView) navHeaderView.findViewById(R.id.username);
+        TextView userEmail = (TextView) navHeaderView.findViewById(R.id.useremail);
+        ImageView profileImage = (ImageView) navHeaderView.findViewById(R.id.userProfileImage);
+        username.setText((String) savedStrings.get(getString(R.string.Name)));
+        userEmail.setText((String) savedStrings.get(getString(R.string.Email)));
+        Picasso.with(getApplicationContext()).load((String) savedStrings.get(getString(R.string.ProfilePicUri))).into(profileImage);
 
     }
 
