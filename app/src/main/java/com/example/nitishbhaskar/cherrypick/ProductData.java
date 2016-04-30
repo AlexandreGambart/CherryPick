@@ -119,6 +119,7 @@ public class ProductData {
 
     private void onItemAddedToCloud(HashMap item){
         productList.add(item);
+        //Toast.makeText(mContext, "Item Added:" + item.get("productName"), Toast.LENGTH_SHORT).show();
     }
 
     private void onItemRemovedFromCloud(HashMap item){
@@ -135,9 +136,7 @@ public class ProductData {
         if(position !=-1) {
             productList.remove(position);
             Log.d("NotifyRemoved", id);
-            Toast.makeText(mContext, "Item Removed:" + id, Toast.LENGTH_SHORT).show();
-            //if(myFirebaseRecylerAdapter!=null);
-            //myFirebaseRecylerAdapter.notifyItemRemoved(position);
+            //Toast.makeText(mContext, "Item Removed:" + item.get("productName"), Toast.LENGTH_SHORT).show();
         }
 
     }
