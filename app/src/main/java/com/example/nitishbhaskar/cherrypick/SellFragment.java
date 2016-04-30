@@ -89,6 +89,7 @@ public class SellFragment extends Fragment {
         return sellFragment;
     }
 
+
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
@@ -104,6 +105,7 @@ public class SellFragment extends Fragment {
         public void onProviderDisabled(String provider) {
         }
     };
+
 
 
     @Override
@@ -148,16 +150,11 @@ public class SellFragment extends Fragment {
 
         };
 
+
         mLocationManager = (LocationManager) getContext().getSystemService(getContext().LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return view;
         }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
@@ -171,6 +168,7 @@ public class SellFragment extends Fragment {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
 
 /*
         myLocation.setOnTouchListener(new View.OnTouchListener() {
@@ -201,17 +199,18 @@ public class SellFragment extends Fragment {
         myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(currentLocation == null) {
+                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                    Criteria criteria = new Criteria();
+                    String provider = locationManager.getBestProvider(criteria, true);
+                    // Getting Current Location
+                    if (ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                /*LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                String provider = locationManager.getBestProvider(criteria, true);
-                // Getting Current Location
-                if (ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                }*/
-                //location = locationManager.getLastKnownLocation(provider);
+                    }
+                    currentLocation = locationManager.getLastKnownLocation(provider);
+                }
                 updateLocation(currentLocation);
             }
         });
