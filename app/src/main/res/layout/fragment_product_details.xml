@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.nitishbhaskar.cherrypick.BuyActivity">
 
     <android.support.v4.widget.NestedScrollView
@@ -93,20 +94,42 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@mipmap/contact_mail"
                 android:id="@+id/contactSeller"
-                android:layout_below="@+id/details_productSeller"/>
-            <Button
+                android:layout_below="@+id/details_productSeller"
+
+                />
+
+            <mehdi.sakout.fancybuttons.FancyButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editBtn"
-                android:text="Edit"
-                android:layout_below="@+id/contactSeller"/>
-            <Button
+                android:layout_below="@+id/contactSeller"
+                android:padding="15dp"
+                fancy:fb_textSize="20dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#D24958"
+                fancy:fb_focusColor="#683045"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Edit"
+                fancy:fb_textColor="#C4C4C9"
+                android:visibility="visible"/>
+
+            <mehdi.sakout.fancybuttons.FancyButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/deleteBtn"
-                android:text="Delete"
                 android:layout_toRightOf="@id/editBtn"
-                android:layout_below="@id/contactSeller"/>
+                android:layout_below="@id/contactSeller"
+                android:padding="15dp"
+                fancy:fb_textSize="20dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#D24958"
+                fancy:fb_focusColor="#683045"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="Delete"
+                fancy:fb_textColor="#C4C4C9"
+                android:visibility="visible"/>
 
         </RelativeLayout>
     </LinearLayout>

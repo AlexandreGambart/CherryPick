@@ -67,6 +67,8 @@ import java.lang.Object;
 import java.util.Locale;
 import java.util.Map;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -144,8 +146,8 @@ public class ProductDetailsFragment extends Fragment implements
         sellerEmail = (String)currentProduct.get("sellerEmail");
         sellerNameView.setText("Seller: "+(String)currentProduct.get("sellerName"));
 
-        Button editBtn = (Button) view.findViewById(R.id.editBtn);
-        Button deleteBtn = (Button) view.findViewById(R.id.deleteBtn);
+        FancyButton editBtn = (FancyButton) view.findViewById(R.id.editBtn);
+        FancyButton deleteBtn = (FancyButton) view.findViewById(R.id.deleteBtn);
         //Enable delete button if seller is viewing the product
         if(!userEmail.equals(sellerEmail)) {
             editBtn.setVisibility(View.GONE);

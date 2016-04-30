@@ -175,8 +175,8 @@ public class HomePageFragment extends Fragment implements SwipeStack.SwipeStackL
                         if(text.toLowerCase().contains("sell")){
                             tileClickListener.tileClicked(R.id.sellTile,getView());
                         }
-                        if(text.toLowerCase().contains("my page")){
-                            tileClickListener.tileClicked(R.id.exchangeTile,getView());
+                        if(text.toLowerCase().contains("page")){
+                            tileClickListener.tileClicked(R.id.myPageTile,getView());
                         }
                     }
                 }
