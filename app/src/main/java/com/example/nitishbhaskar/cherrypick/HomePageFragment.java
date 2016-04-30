@@ -16,14 +16,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import link.fls.swipestack.SwipeStack;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -31,12 +34,13 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment implements SwipeStack.SwipeStackListener {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String SHOWCASE_ID = "Sequence 1";
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private ITileClickListener tileClickListener = null;
     RelativeLayout relativeLayout;
+    private ArrayList<String> mData;
 
     public static HomePageFragment newInstance(int sectionNumber){
         HomePageFragment homePageFragment = new HomePageFragment();
@@ -91,21 +95,21 @@ public class HomePageFragment extends Fragment {
         buyTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tileClickListener.tileClicked(R.id.buyTile,v);
+                tileClickListener.tileClicked(R.id.buyTile, v);
             }
         });
 
         sellTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tileClickListener.tileClicked(R.id.sellTile,v);
+                tileClickListener.tileClicked(R.id.sellTile, v);
             }
         });
 
         myPageTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tileClickListener.tileClicked(R.id.myPageTile,v);
+                tileClickListener.tileClicked(R.id.myPageTile, v);
             }
         });
 
@@ -117,7 +121,22 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+        mData = new ArrayList<>();
+        SwipeStack swipeStack = (SwipeStack)view.findViewById(R.id.swipeStack);
+        fillWithData();
+        swipeStack.setAdapter(new SwipeStackAdapter(mData));
+
         return view;
+    }
+
+    private void fillWithData() {
+        mData.add("Tips and Tricks");
+        mData.add("Did you know?");
+        mData.add("You can navigate using voice commands.");
+        mData.add("Go to My Page to explore beta features");
+        mData.add("Go to About me to know about this app makers");
+        mData.add("You can share the product information via email and sms");
+        mData.add("There is a barcode scanner in My Page.");
     }
 
 
@@ -167,5 +186,56 @@ public class HomePageFragment extends Fragment {
     }
 
 
+    @Override
+    public void onViewSwipedToLeft(int position) {
 
+    }
+
+    @Override
+    public void onViewSwipedToRight(int position) {
+
+    }
+
+    @Override
+    public void onStackEmpty() {
+
+    }
+
+    public class SwipeStackAdapter extends BaseAdapter {
+
+        private List<String> mData;
+
+        public SwipeStackAdapter(List<String> data) {
+            this.mData = data;
+        }
+
+        @Override
+        public int getCount() {
+            return mData.size();
+        }
+
+        @Override
+        public String getItem(int position) {
+            return mData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.card, parent, false);
+            }
+
+            TextView textViewCard = (TextView) convertView.findViewById(R.id.textViewCard);
+            textViewCard.setText(mData.get(position));
+            textViewCard.setTextColor(getResources().getColor(R.color.textColor));
+            textViewCard.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            textViewCard.setAlpha(0.85f);
+            return convertView;
+        }
+    }
 }
