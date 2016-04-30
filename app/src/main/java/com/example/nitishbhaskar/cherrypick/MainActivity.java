@@ -197,9 +197,13 @@ public class MainActivity extends AppCompatActivity
         if (count == 0) {
 
             super.onBackPressed();
-            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            Firebase ref = new Firebase(getString(R.string.firebaseUrl));
+            ref.unauth();
+            Intent intent = new Intent(this, LoginActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivity(intent);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(this,this.mAppBar, "testTransition");
+                startActivity(intent, options.toBundle());
             }
             else {
                 startActivity(intent);

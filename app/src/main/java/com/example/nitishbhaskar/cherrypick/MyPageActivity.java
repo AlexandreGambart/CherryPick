@@ -266,7 +266,7 @@ public class MyPageActivity extends AppCompatActivity
                 e1.printStackTrace();
             }
             if(product.isEmpty()){
-                  Toast.makeText(getApplicationContext(),"Could not find weather",Toast.LENGTH_LONG);
+                  Toast.makeText(getApplicationContext(),"Could not find product",Toast.LENGTH_LONG);
             }else{
                 Intent intent = new Intent(MyPageActivity.this,SellActivity.class);
                 intent.putExtra("currentProduct",product);
