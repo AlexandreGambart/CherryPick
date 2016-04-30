@@ -6,4 +6,10 @@
     <color name="colorCardDetails">#FAAAAA</color>
     <color name="textColor">#C4C4C9</color>
     <color name="tabtitlecolor">#FFFFFF</color>
+    <color name="green">#a3c639</color>
+    <color name="dark_green">#85a71d</color>
+    <color name="darker_green">#648306</color>
+    <color name="light_blue">#b3e5fc</color>
+    <color name="blue">#03a9f4</color>
+    <color name="purple">#ce7e87</color>
 </resources>

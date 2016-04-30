@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:transitionName="testTransition"
+    android:layout_marginTop="53dp">
+    <com.example.nitishbhaskar.cherrypick.CrossFadeSlidingPaneLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sliding_pane_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+       <!--Left Panel start-->
+        <FrameLayout
+            android:layout_width="@dimen/side_pane_width"
+            android:layout_height="match_parent"
+            android:background="@color/purple">
+            <!-- This is the hiding panel on the left-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <com.pkmmte.view.CircularImageView
+                    android:id="@+id/main.imageview.placeholder"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/pic"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    app:border="true"
+                    app:border_color="@color/textColor"
+                    app:border_width="2dp"
+                    app:shadow="true"
+                    android:tint="#11000000"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.9"/>
+
+                <FrameLayout
+                    android:id="@+id/main.framelayout.title"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="top"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.3"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/main.linearlayout.title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="Rakesh N E"
+                            android:textColor="@color/textColor"
+                            android:textSize="40sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:text="Master's in Computer Engineering"
+                            android:textColor="@color/textColor"
+                            android:textStyle="bold"
+                            android:textSize="15sp"/>
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+            <!-- This is the end of hiding panel on the left-->
+
+            <!-- This is the start of small panel on the left-->
+            <TextView
+                android:layout_width="@dimen/partial_pane_width"
+                android:layout_height="match_parent"
+                android:background="@color/blue"
+                android:text="Rakesh"
+                android:textSize="18sp"
+                android:textStyle="bold|normal"
+                />
+            <!-- This is the end of small panel on the left-->
+        </FrameLayout>
+
+        <!--End of left Panel-->
+
+        <!--Start of right Panel-->
+        <FrameLayout
+            android:layout_width="@dimen/main_pane_width"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/partial_pane_width"
+            android:background="@color/light_blue"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <com.pkmmte.view.CircularImageView
+                    android:id="@+id/second.imageview.placeholder"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/pic"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    app:border="true"
+                    app:border_color="@color/colorPrimary"
+                    app:border_width="2dp"
+                    app:shadow="true"
+                    android:tint="#11000000"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.9"/>
+
+                <FrameLayout
+                    android:id="@+id/second.framelayout.title"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="top"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.3"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/sidelayouttwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="Nitish Bhaskar"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="40sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:text="Master's in Computer Engineering"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            android:textSize="15sp"/>
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+        <!--End of right panel-->
+    </com.example.nitishbhaskar.cherrypick.CrossFadeSlidingPaneLayout>
+
+</RelativeLayout>
