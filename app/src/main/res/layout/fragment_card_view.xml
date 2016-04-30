@@ -14,10 +14,10 @@
         >
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="330dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:rowCount="7"
+            android:rowCount="8"
             android:columnCount="1"
             android:padding="8dp"
             android:id="@+id/topLayout"
@@ -35,7 +35,7 @@
                 <ImageView
                     android:id="@+id/productIcon"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="270dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon" />
 
@@ -43,7 +43,7 @@
                     android:id="@+id/productPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
+                    android:layout_gravity="right|bottom"
                     android:layout_marginTop="147dp"
                     android:layout_marginLeft="0.2dp"
                     android:text="Price: $1500"
@@ -53,34 +53,37 @@
                     android:textSize="18sp"
                     android:background="#0099ff"/>
 
-            </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/productTitle"
+                    android:layout_row="5"
+                    android:text="NEXUS 5X"
+                    android:textSize="20sp"
+                    android:layout_column="0"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="left|top"
+                    android:padding="5dp"
+                    android:textStyle="bold|normal"
+                    android:background="@color/textColor"/>
 
+
+            </FrameLayout>
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/productTitle"
-                android:layout_row="5"
-                android:text="NEXUS 5X"
-                android:textSize="20sp"
-                android:layout_column="0"
-                android:layout_columnWeight="1"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:textStyle="bold|normal"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:id="@+id/productDescription"
-                android:layout_row="6"
+                android:layout_row="7"
                 android:text="NEXUS 5X"
                 android:textSize="15sp"
                 android:layout_column="0"
                 android:layout_columnWeight="1"
-                android:layout_marginTop="5dp"
                 android:layout_rowWeight="0.1"
-                android:textStyle="normal"/>
+                android:textStyle="normal" />
+
         </GridLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
